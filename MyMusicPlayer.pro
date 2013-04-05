@@ -11,11 +11,14 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        widget.cpp
+        widget.cpp \
+    dockwidgetlrc.cpp
 
-HEADERS  += widget.h
+HEADERS  += widget.h \
+    dockwidgetlrc.h
 
-FORMS    += widget.ui
+FORMS    += widget.ui \
+    dockwidgetlrc.ui
 
 RESOURCES += \
     images.qrc

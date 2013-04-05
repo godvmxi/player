@@ -17,6 +17,8 @@
 #include <phonon>
 #include <Phonon/MediaObject>
 #include <QTimer>
+#include "dockwidgetlrc.h"
+#include <QCloseEvent>
 
 
 namespace Ui {
@@ -55,12 +57,17 @@ private:
     int currentIndex;
     int numberOfMusic;
 
+    int lrcHide ;
+    DockWidgetLrc *musicLrc;
+protected:
+     void closeEvent(QCloseEvent *event);
+
 private slots:
 //    void on_toolButton_list_clicked(bool checked);
 //    void on_toolButton_lrc_clicked(bool checked);
     void creatActions();
     void removeSlot();
-    void refreshTime();
+    void refreshTime(qint64);
 
     void on_toolButton_playpause_clicked();
     void on_toolButton_playstop_clicked();

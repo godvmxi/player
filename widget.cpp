@@ -6,6 +6,15 @@ Widget::Widget(QWidget *parent) :
     ui(new Ui::Widget)
 {
     ui->setupUi(this);
+    this->lrcHide = 0;
+    musicLrc = new DockWidgetLrc;
+    qDebug()<<"lrchide"<<this->lrcHide;
+    if(this->lrcHide)
+    {
+        musicLrc->hide();
+    }
+    else
+        musicLrc->show();
     this->setWindowTitle(tr("Media Player"));
     audio=new Phonon::MediaObject();
     audio->setTickInterval(1);
@@ -76,11 +85,19 @@ void Widget::creatActions()
 void Widget::on_toolButton_list_clicked()
 {
     qDebug()<<"tool button list";
+    this->musicLrc->update_lrc("test",1);
 }
 
 void Widget::on_toolButton_lrc_clicked()
 {
-    qDebug()<<"tool button lrc";
+    lrcHide = !lrcHide;
+    qDebug()<<"tool button lrc"<< lrcHide;
+    if(this->lrcHide)
+    {
+        musicLrc->hide();
+    }
+    else
+        musicLrc->show();
 }
 void Widget::removeSlot(){
 
@@ -197,8 +214,8 @@ void Widget::on_toolButton_open_clicked()
     currentSource = sourceList.at(this->currentIndex);
     qDebug()<<"next music -->" << this->currentIndex+1 <<currentSource.fileName();
     audio->setCurrentSource(this->currentSource);
-    audio->setTickInterval(1000);
-    connect(audio,SIGNAL(tick(qint64)),this,SLOT(refreshTime()));
+    audio->setTickInterval(100);
+    connect(audio,SIGNAL(tick(qint64)),this,SLOT(refreshTime(qint64)));
 
     audio->play();
     ui->toolButton_playpause->setIcon(*iconPause);
@@ -223,20 +240,22 @@ void Widget::on_toolButton_open_clicked()
 
 
 }
-void Widget::refreshTime()
+void Widget::refreshTime(qint64 time)
 {
-//    songTimer.stop();
-//    songTimer.setInterval(1000);
-//    currentSource = sourceList.at(this->currentIndex);
-//  songTimer.start(1000);
-    qint64 currentMinute = audio->currentTime()/60000;
-    qint64 currentSecond= audio->currentTime()%60000 /1000;
+
+
+    qint64 currentMinute = time/60000;
+    qint64 currentSecond= time%60000 /1000;
+    qint64 currentMSecond= time%60000 %1000;
     qint64 totalMinute = audio->totalTime()/60000;
     qint64 totalSecond= audio->totalTime()%60000 /1000;
-    QString timeLabel;
-    timeLabel.sprintf("%2d:%2d / %2d:%2d",currentMinute,currentSecond,totalMinute,totalSecond);
+    qint64 totalMSecond= ( audio->totalTime()%60000 %1000 )/10;
+    QString total = QString("%1:%2 /").arg(totalMinute).arg(totalSecond);
+    QString cur = QString(" %1:%2").arg(currentMinute).arg(currentSecond);
+   // qDebug()<< total <<"  " << cur;
+    QString timeLabel = total + cur;
+
     ui->labelTime->setText(timeLabel);
-//    qDebug()<<"i am in timer"<<audio->currentTime()<<audio->totalTime();
 
 }
 void Widget::on_doubleClick_listItems(QModelIndex index)
@@ -251,6 +270,13 @@ void Widget::on_doubleClick_listItems(QModelIndex index)
 
     qDebug()<<"meta data -> "<<metaData.value("ARTIST")<<metaData.value("ALBUM")<<metaData.value("TITLE")<<metaData.value("DATA")<<metaData.value("GENRE")\
            <<metaData.value("TRACK")<<metaData.value("DESCRIPTION")<<metaData.value("MUSICBRAINZDISCID");
+
+}
+
+void Widget::closeEvent(QCloseEvent *event)
+{
+    this->musicLrc->close();
+    this->close();
 
 }
 

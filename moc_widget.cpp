@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'widget.h'
 **
-** Created: Fri Apr 5 15:23:25 2013
+** Created: Fri Apr 5 18:04:54 2013
 **      by: The Qt Meta Object Compiler version 63 (Qt 4.8.3)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -34,22 +34,23 @@ static const uint qt_meta_data_Widget[] = {
        8,    7,    7,    7, 0x08,
       23,    7,    7,    7, 0x08,
       36,    7,    7,    7, 0x08,
-      50,    7,    7,    7, 0x08,
-      84,    7,    7,    7, 0x08,
-     117,    7,    7,    7, 0x08,
-     146,    7,    7,    7, 0x08,
-     175,    7,    7,    7, 0x08,
-     204,    7,    7,    7, 0x08,
-     232,    7,    7,    7, 0x08,
-     261,    7,    7,    7, 0x08,
-     296,  290,    7,    7, 0x08,
+      56,    7,    7,    7, 0x08,
+      90,    7,    7,    7, 0x08,
+     123,    7,    7,    7, 0x08,
+     152,    7,    7,    7, 0x08,
+     181,    7,    7,    7, 0x08,
+     210,    7,    7,    7, 0x08,
+     238,    7,    7,    7, 0x08,
+     267,    7,    7,    7, 0x08,
+     302,  296,    7,    7, 0x08,
 
        0        // eod
 };
 
 static const char qt_meta_stringdata_Widget[] = {
     "Widget\0\0creatActions()\0removeSlot()\0"
-    "refreshTime()\0on_toolButton_playpause_clicked()\0"
+    "refreshTime(qint64)\0"
+    "on_toolButton_playpause_clicked()\0"
     "on_toolButton_playstop_clicked()\0"
     "on_toolButton_stop_clicked()\0"
     "on_toolButton_open_clicked()\0"
@@ -68,7 +69,7 @@ void Widget::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void
         switch (_id) {
         case 0: _t->creatActions(); break;
         case 1: _t->removeSlot(); break;
-        case 2: _t->refreshTime(); break;
+        case 2: _t->refreshTime((*reinterpret_cast< qint64(*)>(_a[1]))); break;
         case 3: _t->on_toolButton_playpause_clicked(); break;
         case 4: _t->on_toolButton_playstop_clicked(); break;
         case 5: _t->on_toolButton_stop_clicked(); break;

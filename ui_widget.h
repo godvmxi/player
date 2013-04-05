@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'widget.ui'
 **
-** Created: Fri Apr 5 15:23:23 2013
+** Created: Fri Apr 5 16:11:48 2013
 **      by: Qt User Interface Compiler version 4.8.3
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -50,7 +50,7 @@ public:
         Widget->resize(400, 401);
         labelTime = new QLabel(Widget);
         labelTime->setObjectName(QString::fromUtf8("labelTime"));
-        labelTime->setGeometry(QRect(265, 20, 91, 20));
+        labelTime->setGeometry(QRect(270, 10, 81, 20));
         listWidget = new QListWidget(Widget);
         listWidget->setObjectName(QString::fromUtf8("listWidget"));
         listWidget->setGeometry(QRect(20, 200, 371, 192));
