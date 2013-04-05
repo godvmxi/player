@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'widget.h'
 **
-** Created: Fri Apr 5 21:18:47 2013
+** Created: Fri Apr 5 22:33:39 2013
 **      by: The Qt Meta Object Compiler version 63 (Qt 4.8.3)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -23,7 +23,7 @@ static const uint qt_meta_data_Widget[] = {
        6,       // revision
        0,       // classname
        0,    0, // classinfo
-      13,   14, // methods
+      14,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -44,6 +44,7 @@ static const uint qt_meta_data_Widget[] = {
      267,    7,    7,    7, 0x08,
      302,  296,    7,    7, 0x08,
      340,  296,    7,    7, 0x08,
+     387,    7,    7,    7, 0x08,
 
        0        // eod
 };
@@ -61,6 +62,7 @@ static const char qt_meta_stringdata_Widget[] = {
     "on_toolButton_last_clicked()\0index\0"
     "on_doubleClick_listItems(QModelIndex)\0"
     "on_tableWidget_list_doubleClicked(QModelIndex)\0"
+    "next_media()\0"
 };
 
 void Widget::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
@@ -82,6 +84,7 @@ void Widget::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void
         case 10: _t->on_toolButton_last_clicked(); break;
         case 11: _t->on_doubleClick_listItems((*reinterpret_cast< QModelIndex(*)>(_a[1]))); break;
         case 12: _t->on_tableWidget_list_doubleClicked((*reinterpret_cast< const QModelIndex(*)>(_a[1]))); break;
+        case 13: _t->next_media(); break;
         default: ;
         }
     }
@@ -119,9 +122,9 @@ int Widget::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 13)
+        if (_id < 14)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 13;
+        _id -= 14;
     }
     return _id;
 }

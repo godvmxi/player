@@ -19,6 +19,10 @@
 #include <QTimer>
 #include "dockwidgetlrc.h"
 #include <QCloseEvent>
+#include <cstdlib>
+#include <stdlib.h>
+#include <QTime>
+#include <QDateTime>
 
 
 namespace Ui {
@@ -58,8 +62,11 @@ private:
     int currentIndex;
     int numberOfMusic;
 
+    int playMode ;
+
     int lrcHide ;
     DockWidgetLrc *musicLrc;
+    QFile *lrcFile;
 protected:
      void closeEvent(QCloseEvent *event);
 
@@ -81,6 +88,7 @@ private slots:
     void on_toolButton_last_clicked();
     void on_doubleClick_listItems(QModelIndex index);
     void on_tableWidget_list_doubleClicked(const QModelIndex &index);
+    void next_media();
 };
 
 #endif // FORM_H

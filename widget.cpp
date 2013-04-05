@@ -6,6 +6,10 @@ Widget::Widget(QWidget *parent) :
     ui(new Ui::Widget)
 {
     ui->setupUi(this);
+    this->setWindowTitle(tr("Pretty Girl Player"));
+
+
+    this->audioSource = NULL;
     ui->tableWidget_list->setEditTriggers ( QAbstractItemView::NoEditTriggers );
     ui->tableWidget_list->setSelectionMode ( QAbstractItemView::SingleSelection);
  //   ui->tableWidget_list->setColumnWidth(0,50);
@@ -20,12 +24,19 @@ Widget::Widget(QWidget *parent) :
     }
     else
         musicLrc->show();
-    this->setWindowTitle(tr("Media Player"));
+
+    this->playMode = ui->comboBox_playMode->currentIndex();
+    qDebug()<<"play mode ->"<<ui->comboBox_playMode->currentText();
+
+
+
     audio=new Phonon::MediaObject();
     audio->setTickInterval(1);
     audioOutput=new Phonon::AudioOutput(Phonon::VideoCategory);
     Phonon::createPath(audio,audioOutput);
     msicinfoObj=new Phonon::MediaObject(this);
+
+    connect(audio,SIGNAL(finished()),this,SLOT(next_media()));
 
     volumeSlider=new Phonon::VolumeSlider(audioOutput,this);
     volumeSlider->move(10,100);
@@ -82,6 +93,8 @@ void Widget::creatActions()
 
 void Widget::on_toolButton_list_clicked()
 {
+    next_media();
+    return ;
     qDebug()<<"tool button list";
     this->musicLrc->update_lrc("test",1);
 }
@@ -336,14 +349,63 @@ void Widget::closeEvent(QCloseEvent *event)
 void Widget::on_tableWidget_list_doubleClicked(const QModelIndex &index)
 {
     qDebug()<<"doulbe click index ->"<<index.row()<<" <->"<<index.column() << "   " << index.data().toString();
-    //Phonon::MediaSource *audioSource = new Phonon::MediaSource(index.data().toString());
-    QString name  = ui->tableWidget_list->item(index.row(),2)->text();
-    Phonon::MediaSource *audioSource = new Phonon::MediaSource(name);
+    this->currentIndex = index.row();
     audio->stop();
+    if(this->audioSource != NULL)
+        delete audioSource;
+    Phonon::MediaSource *audioSource = new Phonon::MediaSource(ui->tableWidget_list->item(index.row(),2)->text());
+
   //  this->currentSource  = new Phonon::MediaSource(index.data().toString());
     audio->setCurrentSource(*audioSource);
     audio->play();
 
+}
 
+void Widget::next_media()
+{
+    this->playMode = ui->comboBox_playMode->currentIndex();
+    QTime seed = QTime::currentTime();
+    QDateTime date;
+    switch(this->playMode){
+        case 0://顺序播放
+        qDebug()<<"play mode -->"<<this->playMode;
+        if(this->playMode == ui->tableWidget_list->rowCount()-1)
+            this->currentIndex = this->currentIndex;
+        break;
+    case 1://全部播放
+        qDebug()<<"play mode -->"<<this->playMode;
+        if(this->playMode == ui->tableWidget_list->rowCount()-1)
+            this->currentIndex = 0;
+        break;
+    case 2://单曲循环
+        qDebug()<<"play mode -->"<<this->playMode;
+        if(this->playMode == ui->tableWidget_list->rowCount()-1)
+            this->currentIndex = 0;
+        break;
+    case 3://随机播放
+        qDebug()<<"play mode -->"<<this->playMode;
+        qsrand(seed.second());
+
+        this->currentIndex = qrand() % ui->tableWidget_list->rowCount();
+        qDebug() <<seed.second()<<qrand() << this->currentIndex << ui->tableWidget_list->rowCount();
+        break;
+    default:
+         qDebug()<<"play mode -->"<<this->playMode;
+
+         break;
+
+    }
+
+audio->stop();
+    if(this->audioSource != NULL)
+        delete audioSource;
+
+
+
+    Phonon::MediaSource *audioSource = new Phonon::MediaSource(ui->tableWidget_list->item(this->currentIndex,2)->text());
+
+  //  this->currentSource  = new Phonon::MediaSource(index.data().toString());
+    audio->setCurrentSource(*audioSource);
+    audio->play();
 
 }
