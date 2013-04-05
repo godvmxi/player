@@ -42,6 +42,7 @@ private:
     Phonon::SeekSlider *seekSlider;
     QList<Phonon::MediaSource>  sourceList;
     Phonon::MediaSource currentSource;
+    Phonon::MediaSource *audioSource;
 
     QIcon *iconPause ;
     QIcon *iconPlay ;
@@ -79,6 +80,7 @@ private slots:
     void on_toolButton_next_clicked();
     void on_toolButton_last_clicked();
     void on_doubleClick_listItems(QModelIndex index);
+    void on_tableWidget_list_doubleClicked(const QModelIndex &index);
 };
 
 #endif // FORM_H

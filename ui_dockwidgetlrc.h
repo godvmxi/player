@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'dockwidgetlrc.ui'
 **
-** Created: Fri Apr 5 18:00:14 2013
+** Created: Fri Apr 5 18:25:07 2013
 **      by: Qt User Interface Compiler version 4.8.3
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -50,7 +50,7 @@ public:
 
     void retranslateUi(QDockWidget *DockWidgetLrc)
     {
-        DockWidgetLrc->setWindowTitle(QApplication::translate("DockWidgetLrc", "DockWidget", 0, QApplication::UnicodeUTF8));
+        DockWidgetLrc->setWindowTitle(QApplication::translate("DockWidgetLrc", "lrc tab", 0, QApplication::UnicodeUTF8));
         label_lrc_now->setText(QApplication::translate("DockWidgetLrc", "........", 0, QApplication::UnicodeUTF8));
         label_lrc_next->setText(QApplication::translate("DockWidgetLrc", "........", 0, QApplication::UnicodeUTF8));
     } // retranslateUi

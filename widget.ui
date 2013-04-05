@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>400</width>
-    <height>401</height>
+    <height>495</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -34,8 +34,8 @@
     <rect>
      <x>20</x>
      <y>200</y>
-     <width>371</width>
-     <height>192</height>
+     <width>0</width>
+     <height>0</height>
     </rect>
    </property>
   </widget>
@@ -149,16 +149,65 @@
     </item>
    </layout>
   </widget>
-  <widget class="QWidget" name="formLayoutWidget">
+  <widget class="QTableWidget" name="tableWidget_list">
    <property name="geometry">
     <rect>
-     <x>319</x>
-     <y>280</y>
-     <width>41</width>
-     <height>80</height>
+     <x>20</x>
+     <y>190</y>
+     <width>350</width>
+     <height>271</height>
     </rect>
    </property>
-   <layout class="QFormLayout" name="formLayout"/>
+   <column>
+    <property name="text">
+     <string>歌词</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>音乐</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>音乐路径</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>歌词路径</string>
+    </property>
+   </column>
+  </widget>
+  <widget class="QComboBox" name="comboBox_playMode">
+   <property name="geometry">
+    <rect>
+     <x>260</x>
+     <y>90</y>
+     <width>111</width>
+     <height>27</height>
+    </rect>
+   </property>
+   <item>
+    <property name="text">
+     <string>顺序播放</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>全部循环</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>单曲循环</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>随机播放</string>
+    </property>
+   </item>
   </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>

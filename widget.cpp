@@ -6,6 +6,11 @@ Widget::Widget(QWidget *parent) :
     ui(new Ui::Widget)
 {
     ui->setupUi(this);
+    ui->tableWidget_list->setEditTriggers ( QAbstractItemView::NoEditTriggers );
+    ui->tableWidget_list->setSelectionMode ( QAbstractItemView::SingleSelection);
+ //   ui->tableWidget_list->setColumnWidth(0,50);
+ //   ui->tableWidget_list->setColumnWidth(1,300);
+   // ui->tableWidget_list->resize(QSize(100));
     this->lrcHide = 0;
     musicLrc = new DockWidgetLrc;
     qDebug()<<"lrchide"<<this->lrcHide;
@@ -23,7 +28,7 @@ Widget::Widget(QWidget *parent) :
     msicinfoObj=new Phonon::MediaObject(this);
 
     volumeSlider=new Phonon::VolumeSlider(audioOutput,this);
-    volumeSlider->move(190,100);
+    volumeSlider->move(10,100);
     volumeSlider->resize(50,20);
     volumeSlider->setStyleSheet("background-color:rgb(255,255,255,255,100)");
     volumeSlider->setFixedWidth(100);
@@ -44,13 +49,6 @@ Widget::~Widget()
 {
     delete ui;
 }
-
-
-
-
-
-
-
 
 void Widget::creatActions()
 {
@@ -198,18 +196,71 @@ void Widget::on_toolButton_open_clicked()
     }
     this->numberOfMusic += files.count();
     qDebug()<<"get music number -> "<<this->numberOfMusic;
-
-
+    int oldTableCount = ui->tableWidget_list->rowCount();
+    ui->tableWidget_list->setRowCount(oldTableCount+ files.count());
+ //   ui->tableWidget_list->setColumnCount(2);
     QFileInfo fileinfo;
+    int i = 0;
     foreach(file,files)
     {
-
+        //update play list
         sourceList.append(file);
+        //get file information
         fileinfo.setFile(file);
         qDebug()<<"file path"<<fileinfo.absoluteFilePath()<<"file baseName:"<<fileinfo.baseName()<<"bundleName"<<fileinfo.bundleName();
+
+
         ui->listWidget->addItem(fileinfo.baseName());
 
+        //checkout lrc whether exist
+        QString abspath = fileinfo.absoluteFilePath();
+        abspath.replace(QRegExp("wma"),"lrc");
+        abspath.replace(QRegExp("WMA"),"lrc");
+        abspath.replace(QRegExp("mp3"),"lrc");
+        abspath.replace(QRegExp("MP3"),"lrc");
+
+        QFileInfo lrcInfo(abspath);
+        QTableWidgetItem *lrcIcon = new QTableWidgetItem();//
+        QTableWidgetItem *lrcAbsPath = new QTableWidgetItem();//
+        QTableWidgetItem *musicName = new QTableWidgetItem(fileinfo.baseName());
+        QTableWidgetItem *musicAbsPath = new QTableWidgetItem(fileinfo.absoluteFilePath());
+
+        if(lrcInfo.exists())
+        {
+            //musicLrc->setIcon(QIcon"(":/images/lrcok.png"));
+            lrcIcon->setText("YES");
+            lrcIcon->setBackground(QBrush(QColor(Qt::green),Qt::SolidPattern));
+            //save lrc full path
+            lrcAbsPath->setText(lrcInfo.absoluteFilePath());
+            //musicLrc->setData(1,0);
+
+        }
+        else
+        {
+            //musicLrc->setIcon(QIcon(":/images/lrcerr.png"));
+            lrcIcon->setText("ERROR");
+            lrcIcon->setBackground(QBrush(QColor(Qt::red),Qt::SolidPattern));
+           // musicLrc->setData(1,1);
+         }
+
+
+
+        //check the file types
+        QString suffix = fileinfo.suffix();
+        if(suffix == QString("mp3") || suffix == QString("MP3"))
+            musicName->setIcon(QIcon(":/images/mp3.png"));
+        else if(suffix == QString("WMA") || suffix == QString("wma"))
+            musicName->setIcon(QIcon(":/images/wma.png"));
+
+        ui->tableWidget_list->setItem(oldTableCount,0,lrcIcon);
+        ui->tableWidget_list->setItem(oldTableCount,1,musicName);
+        ui->tableWidget_list->setItem(oldTableCount,2,musicAbsPath);
+        ui->tableWidget_list->setItem(oldTableCount,3,lrcAbsPath);
+        oldTableCount++;
+
     }
+
+
     audio->setQueue(sourceList);
     currentSource = sourceList.at(this->currentIndex);
     qDebug()<<"next music -->" << this->currentIndex+1 <<currentSource.fileName();
@@ -217,7 +268,7 @@ void Widget::on_toolButton_open_clicked()
     audio->setTickInterval(100);
     connect(audio,SIGNAL(tick(qint64)),this,SLOT(refreshTime(qint64)));
 
-    audio->play();
+    //audio->play();
     ui->toolButton_playpause->setIcon(*iconPause);
 //    QMap<QString,QString> metaData = audio->metaData();
 //    QList<QString> title = metaData.value("TITLE");
@@ -281,3 +332,18 @@ void Widget::closeEvent(QCloseEvent *event)
 }
 
 
+
+void Widget::on_tableWidget_list_doubleClicked(const QModelIndex &index)
+{
+    qDebug()<<"doulbe click index ->"<<index.row()<<" <->"<<index.column() << "   " << index.data().toString();
+    //Phonon::MediaSource *audioSource = new Phonon::MediaSource(index.data().toString());
+    QString name  = ui->tableWidget_list->item(index.row(),2)->text();
+    Phonon::MediaSource *audioSource = new Phonon::MediaSource(name);
+    audio->stop();
+  //  this->currentSource  = new Phonon::MediaSource(index.data().toString());
+    audio->setCurrentSource(*audioSource);
+    audio->play();
+
+
+
+}

@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'widget.ui'
 **
-** Created: Fri Apr 5 16:11:48 2013
+** Created: Fri Apr 5 21:21:10 2013
 **      by: Qt User Interface Compiler version 4.8.3
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -14,11 +14,12 @@
 #include <QtGui/QAction>
 #include <QtGui/QApplication>
 #include <QtGui/QButtonGroup>
-#include <QtGui/QFormLayout>
+#include <QtGui/QComboBox>
 #include <QtGui/QHBoxLayout>
 #include <QtGui/QHeaderView>
 #include <QtGui/QLabel>
 #include <QtGui/QListWidget>
+#include <QtGui/QTableWidget>
 #include <QtGui/QToolButton>
 #include <QtGui/QWidget>
 
@@ -40,20 +41,20 @@ public:
     QToolButton *toolButton_open;
     QToolButton *toolButton_list;
     QToolButton *toolButton_lrc;
-    QWidget *formLayoutWidget;
-    QFormLayout *formLayout;
+    QTableWidget *tableWidget_list;
+    QComboBox *comboBox_playMode;
 
     void setupUi(QWidget *Widget)
     {
         if (Widget->objectName().isEmpty())
             Widget->setObjectName(QString::fromUtf8("Widget"));
-        Widget->resize(400, 401);
+        Widget->resize(400, 495);
         labelTime = new QLabel(Widget);
         labelTime->setObjectName(QString::fromUtf8("labelTime"));
         labelTime->setGeometry(QRect(270, 10, 81, 20));
         listWidget = new QListWidget(Widget);
         listWidget->setObjectName(QString::fromUtf8("listWidget"));
-        listWidget->setGeometry(QRect(20, 200, 371, 192));
+        listWidget->setGeometry(QRect(20, 200, 0, 0));
         layoutWidget = new QWidget(Widget);
         layoutWidget->setObjectName(QString::fromUtf8("layoutWidget"));
         layoutWidget->setGeometry(QRect(20, 140, 151, 27));
@@ -117,14 +118,22 @@ public:
 
         horizontalLayout_2->addWidget(toolButton_lrc);
 
-        formLayoutWidget = new QWidget(Widget);
-        formLayoutWidget->setObjectName(QString::fromUtf8("formLayoutWidget"));
-        formLayoutWidget->setGeometry(QRect(319, 280, 41, 80));
-        formLayout = new QFormLayout(formLayoutWidget);
-        formLayout->setSpacing(6);
-        formLayout->setContentsMargins(11, 11, 11, 11);
-        formLayout->setObjectName(QString::fromUtf8("formLayout"));
-        formLayout->setContentsMargins(0, 0, 0, 0);
+        tableWidget_list = new QTableWidget(Widget);
+        if (tableWidget_list->columnCount() < 4)
+            tableWidget_list->setColumnCount(4);
+        QTableWidgetItem *__qtablewidgetitem = new QTableWidgetItem();
+        tableWidget_list->setHorizontalHeaderItem(0, __qtablewidgetitem);
+        QTableWidgetItem *__qtablewidgetitem1 = new QTableWidgetItem();
+        tableWidget_list->setHorizontalHeaderItem(1, __qtablewidgetitem1);
+        QTableWidgetItem *__qtablewidgetitem2 = new QTableWidgetItem();
+        tableWidget_list->setHorizontalHeaderItem(2, __qtablewidgetitem2);
+        QTableWidgetItem *__qtablewidgetitem3 = new QTableWidgetItem();
+        tableWidget_list->setHorizontalHeaderItem(3, __qtablewidgetitem3);
+        tableWidget_list->setObjectName(QString::fromUtf8("tableWidget_list"));
+        tableWidget_list->setGeometry(QRect(20, 190, 350, 271));
+        comboBox_playMode = new QComboBox(Widget);
+        comboBox_playMode->setObjectName(QString::fromUtf8("comboBox_playMode"));
+        comboBox_playMode->setGeometry(QRect(260, 90, 111, 27));
 
         retranslateUi(Widget);
 
@@ -166,6 +175,21 @@ public:
         toolButton_lrc->setToolTip(QApplication::translate("Widget", "lrc", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_TOOLTIP
         toolButton_lrc->setText(QApplication::translate("Widget", "lrc", 0, QApplication::UnicodeUTF8));
+        QTableWidgetItem *___qtablewidgetitem = tableWidget_list->horizontalHeaderItem(0);
+        ___qtablewidgetitem->setText(QApplication::translate("Widget", "\346\255\214\350\257\215", 0, QApplication::UnicodeUTF8));
+        QTableWidgetItem *___qtablewidgetitem1 = tableWidget_list->horizontalHeaderItem(1);
+        ___qtablewidgetitem1->setText(QApplication::translate("Widget", "\351\237\263\344\271\220", 0, QApplication::UnicodeUTF8));
+        QTableWidgetItem *___qtablewidgetitem2 = tableWidget_list->horizontalHeaderItem(2);
+        ___qtablewidgetitem2->setText(QApplication::translate("Widget", "\351\237\263\344\271\220\350\267\257\345\276\204", 0, QApplication::UnicodeUTF8));
+        QTableWidgetItem *___qtablewidgetitem3 = tableWidget_list->horizontalHeaderItem(3);
+        ___qtablewidgetitem3->setText(QApplication::translate("Widget", "\346\255\214\350\257\215\350\267\257\345\276\204", 0, QApplication::UnicodeUTF8));
+        comboBox_playMode->clear();
+        comboBox_playMode->insertItems(0, QStringList()
+         << QApplication::translate("Widget", "\351\241\272\345\272\217\346\222\255\346\224\276", 0, QApplication::UnicodeUTF8)
+         << QApplication::translate("Widget", "\345\205\250\351\203\250\345\276\252\347\216\257", 0, QApplication::UnicodeUTF8)
+         << QApplication::translate("Widget", "\345\215\225\346\233\262\345\276\252\347\216\257", 0, QApplication::UnicodeUTF8)
+         << QApplication::translate("Widget", "\351\232\217\346\234\272\346\222\255\346\224\276", 0, QApplication::UnicodeUTF8)
+        );
     } // retranslateUi
 
 };
