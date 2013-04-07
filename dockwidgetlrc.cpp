@@ -19,13 +19,15 @@ int DockWidgetLrc::update_lrc(QString lrc,int action)
     switch(action){
         case 0:
         qDebug()<<"reset lrc tool";
+        ui->label_lrc_now->setText("Music....");
         ui->label_lrc_next->setText("Music....");
-        ui->label_lrc_now->clear();
+
         break;
     case 1:
         qDebug()<<"insert lrc"<<lrc;
         ui->label_lrc_now->setText( ui->label_lrc_next->text() );
         ui->label_lrc_next->setText(lrc);
+        break;
     default:
         qDebug()<<"action error";
         return -1;

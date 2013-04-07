@@ -272,8 +272,10 @@ void Widget::on_toolButton_open_clicked()
         oldTableCount++;
 
     }
-
-
+    audio->setTickInterval(100);
+    connect(audio,SIGNAL(tick(qint64)),this,SLOT(refreshTime(qint64)));
+    next_media();
+    return;
     audio->setQueue(sourceList);
     currentSource = sourceList.at(this->currentIndex);
     qDebug()<<"next music -->" << this->currentIndex+1 <<currentSource.fileName();
@@ -307,19 +309,49 @@ void Widget::on_toolButton_open_clicked()
 void Widget::refreshTime(qint64 time)
 {
 
-
+    QString min,sec,mm;
     qint64 currentMinute = time/60000;
     qint64 currentSecond= time%60000 /1000;
-    qint64 currentMSecond= time%60000 %1000;
-    qint64 totalMinute = audio->totalTime()/60000;
-    qint64 totalSecond= audio->totalTime()%60000 /1000;
-    qint64 totalMSecond= ( audio->totalTime()%60000 %1000 )/10;
-    QString total = QString("%1:%2 /").arg(totalMinute).arg(totalSecond);
-    QString cur = QString(" %1:%2").arg(currentMinute).arg(currentSecond);
+    qint64 currentMSecond= time%60000 %1000 /10;
+    if(currentMinute == 0)
+        min.sprintf("00:");
+    else if(currentMinute <10)
+        min.sprintf("0%d:",currentMinute);
+    else
+        min.sprintf("%d:",currentMinute);
+
+    if(currentSecond == 0)
+        sec.sprintf("00.");
+    else if(currentSecond <10)
+        sec.sprintf("0%d.",currentSecond);
+    else
+        sec.sprintf("%d.",currentSecond);
+
+    if(currentMSecond <= 0)
+        mm.sprintf("00");
+    else if(currentMSecond < 10)
+        mm.sprintf("0%d",currentMSecond);
+    else
+        mm.sprintf("%d",currentMSecond);
+
+    QString cur = min + sec + mm;
+
+    static qint64 change = -1000;
+
+
+
+        totalTime = min + sec + mm;
+    }
+
    // qDebug()<< total <<"  " << cur;
-    QString timeLabel = total + cur;
+
+    totalTime = time_to_string(audio->totalTime());
+    cur = time_to_string();
+    QString timeLabel = totalTime +"/" + cur;
 
     ui->labelTime->setText(timeLabel);
+    if(this->lrcOK)
+        update_lrc_display("["+cur+"]",1);
 
 }
 void Widget::on_doubleClick_listItems(QModelIndex index)
@@ -358,6 +390,10 @@ void Widget::on_tableWidget_list_doubleClicked(const QModelIndex &index)
   //  this->currentSource  = new Phonon::MediaSource(index.data().toString());
     audio->setCurrentSource(*audioSource);
     audio->play();
+    this->lrcOK = try_open_lrc(this->currentIndex);
+
+
+
 
 }
 
@@ -365,6 +401,8 @@ void Widget::next_media()
 {
     this->playMode = ui->comboBox_playMode->currentIndex();
     QTime seed = QTime::currentTime();
+    if(this->currentIndex <0 || this->ui->tableWidget_list->rowCount())
+        this->currentIndex = 0;
     QDateTime date;
     switch(this->playMode){
         case 0://顺序播放
@@ -396,16 +434,125 @@ void Widget::next_media()
 
     }
 
-audio->stop();
+    audio->stop();
     if(this->audioSource != NULL)
         delete audioSource;
-
-
 
     Phonon::MediaSource *audioSource = new Phonon::MediaSource(ui->tableWidget_list->item(this->currentIndex,2)->text());
 
   //  this->currentSource  = new Phonon::MediaSource(index.data().toString());
     audio->setCurrentSource(*audioSource);
+
     audio->play();
+    this->lrcOK = try_open_lrc(this->currentIndex);
+//    this->musicLrc->update_lrc("Music 。。。。。。",0);
+
+
+    //try to add lrc
+
+
+
+}
+
+int Widget::update_lrc_display(QString time,int type)
+{
+    char buf[1024];
+    int len;
+
+    if(this->lrcPreRead.at(0)=='[' && this->lrcPreRead.at(9)==']')
+    {
+        QString sub = this->lrcPreRead.left(10);
+        qDebug()<<"wait for com ->  "<<sub << "  --  " <<time;
+        if(sub.compare(time) <= 0)
+        {
+            this->musicLrc->update_lrc(this->lrcPreRead.mid(10,this->lrcPreRead.size()-10),1);
+            memset(buf,0,1024);
+            len = this->lrcFile.readLine(buf, 1000);
+            this->lrcPreRead = QString("%1").arg(buf);
+            qDebug()<<"re read in new line->"<<this->lrcPreRead;
+
+        }
+
+    }
+    else
+    {
+        memset(buf,0,1024);
+        len = this->lrcFile.readLine(buf, 1000);
+        this->lrcPreRead = QString("%1").arg(buf);
+        qDebug()<<"read in new line->"<<this->lrcPreRead;
+        this->musicLrc->update_lrc(this->lrcPreRead,1);
+
+    }
+
+
+}
+bool Widget::try_open_lrc(int row)
+{
+    this->musicLrc->update_lrc("Music 。。。。。。",0);
+    if(ui->tableWidget_list->item(row,0)->text() == QString("YES"))
+    {
+
+        this->lrcFile.close();
+        this->lrcFile.setFileName(ui->tableWidget_list->item(this->currentIndex,3)->text());
+
+        if(!this->lrcFile.open(QIODevice::ReadOnly))
+        {
+            qDebug()<<"open file error";
+            return false;
+        }
+        this->lrcStream.setDevice(&this->lrcFile);
+        qDebug()<<"open file ok and stream in"  << this->lrcFile.fileName();
+
+        char buf[1024];
+        qint64 lineLength = 0 ;
+
+        memset(buf,0,1024);
+        lineLength = this->lrcFile.readLine(buf, 1000);
+        this->lrcPreRead = QString("%1").arg(buf);
+        qDebug()<<"len ->"<<lineLength<<" content ->"<<this->lrcPreRead;
+        this->musicLrc->update_lrc(this->lrcPreRead,1);
+        return true;
+
+    }
+    else
+        return false;
+}
+
+QString Widget::time_to_string(qint64 time,int type)
+{
+    QString min,sec,mm;
+    qint64 currentMinute = time/60000;
+    qint64 currentSecond= time%60000 /1000;
+    qint64 currentMSecond= time%60000 %1000 /10;
+    static qint64 tmp1 = tmp2 = -1;
+    if(type == 1)
+    {
+
+    }
+    if(currentMinute == 0)
+        min.sprintf("00:");
+    else if(currentMinute <10)
+        min.sprintf("0%d:",currentMinute);
+    else
+        min.sprintf("%d:",currentMinute);
+
+    if(currentSecond == 0)
+        sec.sprintf("00.");
+    else if(currentSecond <10)
+        sec.sprintf("0%d.",currentSecond);
+    else
+        sec.sprintf("%d.",currentSecond);
+
+    if(currentMSecond <= 0)
+        mm.sprintf("00");
+    else if(currentMSecond < 10)
+        mm.sprintf("0%d",currentMSecond);
+    else
+        mm.sprintf("%d",currentMSecond);
+
+
+
+
+    return min+sec+mm;
 
 }

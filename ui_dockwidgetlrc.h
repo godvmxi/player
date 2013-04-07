@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'dockwidgetlrc.ui'
 **
-** Created: Fri Apr 5 18:25:07 2013
+** Created: Sat Apr 6 09:44:29 2013
 **      by: Qt User Interface Compiler version 4.8.3
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -32,15 +32,15 @@ public:
     {
         if (DockWidgetLrc->objectName().isEmpty())
             DockWidgetLrc->setObjectName(QString::fromUtf8("DockWidgetLrc"));
-        DockWidgetLrc->resize(400, 165);
+        DockWidgetLrc->resize(405, 165);
         dockWidgetContents = new QWidget();
         dockWidgetContents->setObjectName(QString::fromUtf8("dockWidgetContents"));
         label_lrc_now = new QLabel(dockWidgetContents);
         label_lrc_now->setObjectName(QString::fromUtf8("label_lrc_now"));
-        label_lrc_now->setGeometry(QRect(110, 20, 66, 17));
+        label_lrc_now->setGeometry(QRect(0, 20, 361, 41));
         label_lrc_next = new QLabel(dockWidgetContents);
         label_lrc_next->setObjectName(QString::fromUtf8("label_lrc_next"));
-        label_lrc_next->setGeometry(QRect(110, 80, 66, 17));
+        label_lrc_next->setGeometry(QRect(20, 90, 361, 31));
         DockWidgetLrc->setWidget(dockWidgetContents);
 
         retranslateUi(DockWidgetLrc);
@@ -51,8 +51,8 @@ public:
     void retranslateUi(QDockWidget *DockWidgetLrc)
     {
         DockWidgetLrc->setWindowTitle(QApplication::translate("DockWidgetLrc", "lrc tab", 0, QApplication::UnicodeUTF8));
-        label_lrc_now->setText(QApplication::translate("DockWidgetLrc", "........", 0, QApplication::UnicodeUTF8));
-        label_lrc_next->setText(QApplication::translate("DockWidgetLrc", "........", 0, QApplication::UnicodeUTF8));
+        label_lrc_now->setText(QApplication::translate("DockWidgetLrc", "<html><head/><body><p><span style=\" font-size:16pt; color:#ff0000;\">........</span></p></body></html>", 0, QApplication::UnicodeUTF8));
+        label_lrc_next->setText(QApplication::translate("DockWidgetLrc", "<html><head/><body><p><span style=\" font-size:16pt; color:#00ffff;\">........</span></p></body></html>", 0, QApplication::UnicodeUTF8));
     } // retranslateUi
 
 };

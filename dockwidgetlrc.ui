@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
+    <width>405</width>
     <height>165</height>
    </rect>
   </property>
@@ -17,27 +17,27 @@
    <widget class="QLabel" name="label_lrc_now">
     <property name="geometry">
      <rect>
-      <x>110</x>
+      <x>0</x>
       <y>20</y>
-      <width>66</width>
-      <height>17</height>
+      <width>361</width>
+      <height>41</height>
      </rect>
     </property>
     <property name="text">
-     <string>........</string>
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:16pt; color:#ff0000;&quot;&gt;........&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_lrc_next">
     <property name="geometry">
      <rect>
-      <x>110</x>
-      <y>80</y>
-      <width>66</width>
-      <height>17</height>
+      <x>20</x>
+      <y>90</y>
+      <width>361</width>
+      <height>31</height>
      </rect>
     </property>
     <property name="text">
-     <string>........</string>
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:16pt; color:#00ffff;&quot;&gt;........&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
    </widget>
   </widget>

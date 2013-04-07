@@ -23,6 +23,8 @@
 #include <stdlib.h>
 #include <QTime>
 #include <QDateTime>
+#include <QDataStream>
+#include <QtTest/QTest>
 
 
 namespace Ui {
@@ -65,8 +67,14 @@ private:
     int playMode ;
 
     int lrcHide ;
+    bool lrcOK;
     DockWidgetLrc *musicLrc;
-    QFile *lrcFile;
+    QFile lrcFile;
+    QDataStream lrcStream;
+    FILE *lrcFd;
+    QString totalTime;
+    QString lrcPreRead;
+    int update_lrc_display(QString time,int type);
 protected:
      void closeEvent(QCloseEvent *event);
 
@@ -89,6 +97,9 @@ private slots:
     void on_doubleClick_listItems(QModelIndex index);
     void on_tableWidget_list_doubleClicked(const QModelIndex &index);
     void next_media();
+    bool try_open_lrc(int row);
+private:
+    QString time_to_string(qint64 time,int type);
 };
 
 #endif // FORM_H
