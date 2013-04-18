@@ -1,13 +1,11 @@
 #include <QtGui/QApplication>
-#include "widget.h"
-#include<QTextCodec>
+#include "playermain.h"
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    Widget w;
+    PlayerMain w;
     w.show();
 
-    QTextCodec::setCodecForTr(QTextCodec::codecForLocale());
     return a.exec();
 }
