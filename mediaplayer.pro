@@ -12,10 +12,12 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         playermain.cpp \
-    playlist.cpp
+    playlist.cpp \
+    controlbar.cpp
 
 HEADERS  += playermain.h \
-    playlist.h
+    playlist.h \
+    controlbar.h
 
 FORMS    += playermain.ui
 

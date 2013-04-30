@@ -7,7 +7,7 @@ PlayerMain::PlayerMain(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::PlayerMain)
 {
-    ui->setupUi(this);
+    //ui->setupUi(this);
     //ui->verticalLayout_left->SetFixedSize()
     //video = new QProcess();
     //video->setProcessChannelMode(QProcess::MergedChannels);
@@ -16,79 +16,36 @@ PlayerMain::PlayerMain(QWidget *parent) :
     //cmd.sprintf("mplayer -vo x11 -zoom -quiet -slave -idle /home/sunbird/media/beyond.mp3  ");
     //qDebug()<<cmd;
     //video->start(cmd);
+    this->processPlay = new QProcess(this);
+    this->processPlay->setProcessChannelMode(QProcess::MergedChannels);
 
-    pushbutton_play_pause = new QPushButton() ;
-    pushbutton_forward = new QPushButton();
-    pushbutton_back = new QPushButton();
-    pushbutton_mute = new QPushButton();
-    dial_vol = new QDial();
-    dial_vol->resize(200,200);
-    combobox_lrc = new QComboBox();
-
-
-    tabview_playlist_music  = new QTableView();
-    tabview_playlist_video  = new QTableView();
-    tabwidge_playlist_tab = new QTabWidget();
-    tabwidge_playlist_tab->setFixedSize(100,100);
-
-
-    /*
-    QVBoxLayout *dock_playlist_layout = new QVBoxLayout();
-    dock_playlist_layout->addWidget(tabwidge_playlist_tab);
-    dock_playlist_layout->addWidget(dial_vol);
-    dock_playlist->setLayout(dock_playlist_layout);
-    */
 
 
     dock_playlist = new PlayList(this);
-    dock_control = new QDockWidget();
-    //dock_playlist->setFeatures(QDockWidget::DockWidgetMovable|QDockWidget::DockWidgetFloatable);
-    //dock_playlist->setFixedSize(200,200);
+
     dock_playlist->setFloating(true);
-    //dock_playlist->setWindowTitle("play list");
-
-    //this->dock_playlist->setAllowedAreas(Qt::LeftDockWidgetArea);
-
-
-
-
     this->addDockWidget(Qt::NoDockWidgetArea,this->dock_playlist);
 
+    connect(this->dock_playlist,SIGNAL(playMusic(QString,QString)),this,SLOT(playMusicSource(QString,QString)));
+    connect(this->dock_playlist,SIGNAL(playMovie(QString,QString)),this,SLOT(playMovieSource(QString,QString)));
+
+    this->controlBar = new ControlBar();
+    this->addDockWidget(Qt::BottomDockWidgetArea,(QDockWidget *)(this->controlBar));
+    this->controlBar->setFloating(true);
+    this->addDockWidget(Qt::NoDockWidgetArea,this->controlBar);
+
+
+    this->widgetPlayMain = new QWidget();
+    this->widgetPlayMain->setGeometry(0,0,400,200);
+    this->setMinimumSize(400,200);
+    this->widgetPlayMain->show();
+    //QHBoxLayout *hLayout  =  new QHBoxLayout();
+    //hLayout->addWidget(this->widgetPlayMain);
+    //this->setLayout(hLayout);
 
 
 
 
-    /*;
-    QVBoxLayout *left = new QVBoxLayout();
-
-    QVBoxLayout *playButtonsLayout = new QVBoxLayout();
-    playButtonsLayout->addWidget(ui->pushButton_play_pause);
-    playButtonsLayout->addWidget(ui->pushButton_forward);
-    playButtonsLayout->addWidget(ui->pushButton_back);
-    QHBoxLayout *leftTop1Layout = new QHBoxLayout();
-    leftTop1Layout->addWidget(ui->horizontalSlider_process);
-
-    leftTop1Layout->setSizeConstraint(QLayout::SetFixedSize);
-
-    QVBoxLayout *muteButtonsLayout = new QVBoxLayout();
-    playButtonsLayout->addWidget(ui->pushButton_mute);
-    playButtonsLayout->addWidget(ui->checkBox_lrc);
-
-    QVBoxLayout *volLayout = new QVBoxLayout();
-    playButtonsLayout->addWidget(ui->dial_vol);
-
-    QHBoxLayout *leftTop2Layout = new QHBoxLayout();
-    leftTop2Layout->addLayout(playButtonsLayout);
-    leftTop2Layout->addLayout(volLayout);
-    leftTop2Layout->addLayout(muteButtonsLayout);
-
-    QHBoxLayout *leftTop3Layout = new QHBoxLayout();
-    leftTop3Layout->addWidget(ui->tabWidget);
-
-    left->addLayout(leftTop1Layout);
-    left->addLayout(leftTop2Layout);
-    left->addLayout(leftTop3Layout);
-    */
 
 }
 
@@ -96,3 +53,27 @@ PlayerMain::~PlayerMain()
 {
     delete ui;
 }
+
+bool PlayerMain::playMovieSource(QString media,QString lrc)
+{
+
+    this->processPlay->close();
+    this->playCmd = QString("mplayer -slave  -quiet %1 -wid %2").arg(media).arg(this->widgetPlayMain->winId());
+    qDebug()<<"movie ->  "<<media<<lrc<<this->playCmd ;
+    this->processPlay->start(this->playCmd);
+    return true;
+}
+
+bool PlayerMain::playMusicSource(QString media,QString lrc)
+{
+
+
+    this->processPlay->close();
+    media = media.replace(" ","\ ");
+    this->playCmd = QString("mplayer -vo x11 -zoom -quiet -slave -idle \"%1\"").arg(media);
+    qDebug()<<"music ->  "<<media<<lrc<<this->playCmd;
+    this->processPlay->start(this->playCmd);
+    return true;
+}
+
+

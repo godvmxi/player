@@ -15,7 +15,10 @@
 #include <QSlider>
 #include <QTabWidget>
 #include <QTableView>
+#include <QProcess>
+#include <QWidget>
 
+#include "controlbar.h"
 #include "playlist.h"
 
 namespace Ui {
@@ -29,14 +32,16 @@ class PlayerMain : public QMainWindow
 public:
     explicit PlayerMain(QWidget *parent = 0);
     ~PlayerMain();
-    QProcess  *video;
+
+public slots:
+    bool playMovieSource(QString media,QString lrc);
+    bool playMusicSource(QString media,QString lrc);
 
 private:
     Ui::PlayerMain *ui;
     QPushButton *pushbutton_play_pause;
     QPushButton *pushbutton_forward;
     QPushButton *pushbutton_back;
-
     QPushButton *pushbutton_mute;
     QDial *dial_vol;
     QComboBox *combobox_lrc;
@@ -46,6 +51,12 @@ private:
     QTableView *tabview_playlist_music;
     QTableView *tabview_playlist_video;
     QTabWidget *tabwidge_playlist_tab;
+
+    ControlBar *controlBar;
+
+    QProcess * processPlay;
+    QString playCmd;
+    QWidget *widgetPlayMain;
 
 };
 

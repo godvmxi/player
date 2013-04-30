@@ -38,7 +38,7 @@ PlayList::PlayList(QWidget *parent) :
     connect(this->tableWidgePlayListMovie,SIGNAL(cellDoubleClicked(int,int)),this,SLOT(movieDoubleClick(int,int)));
 
     this->tabWidgetPlayList  = new QTabWidget();
-    this->tabWidgetPlayList->setStyleSheet("QTabBar::tab{font:8pt;max-width: 60px;min-width: 60px;} QTabWidget::tab-bar {alignment: center;}");
+    this->tabWidgetPlayList->setStyleSheet("QTabBar::tab{font:8pt;max-width: 140px;min-width: 100px;} QTabWidget::tab-bar {alignment: center;}");
 
     this->tabWidgetPlayList->addTab(this->tableWidgePlayListMusic,"music");
     this->tabWidgetPlayList->addTab(this->tableWidgePlayListMovie,"movie");
