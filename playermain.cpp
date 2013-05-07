@@ -7,8 +7,8 @@ PlayerMain::PlayerMain(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::PlayerMain)
 {
-    //ui->setupUi(this);
-    //ui->verticalLayout_left->SetFixedSize()
+    ui->setupUi(this);
+
     //video = new QProcess();
     //video->setProcessChannelMode(QProcess::MergedChannels);
     //QString cmd;
@@ -39,13 +39,7 @@ PlayerMain::PlayerMain(QWidget *parent) :
     this->widgetPlayMain->setGeometry(0,0,400,200);
     this->setMinimumSize(400,200);
     this->widgetPlayMain->show();
-    //QHBoxLayout *hLayout  =  new QHBoxLayout();
-    //hLayout->addWidget(this->widgetPlayMain);
-    //this->setLayout(hLayout);
-
-
-
-
+    this->hide();
 
 }
 

@@ -327,7 +327,7 @@ void PlayList::getNextMusic(int playMode)
     switch(playMode)
     {
     case 0://play one
-        index = 0;
+        index = -1;
         break;
     case 1://play ones
         index =this->currentMusicIndex;
