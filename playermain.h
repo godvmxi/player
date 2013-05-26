@@ -20,7 +20,7 @@
 
 #include "controlbar.h"
 #include "playlist.h"
-
+#include "lrcwidget.h"
 namespace Ui {
     class PlayerMain;
 }
@@ -59,6 +59,7 @@ private:
 
     QString playCmd;
     QWidget *widgetPlayMain;
+    lrcWidget *lrc;
 
 };
 
