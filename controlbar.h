@@ -14,8 +14,10 @@ public:
     explicit ControlBar(QWidget *parent = 0);
 
 signals:
+    void playerCmdSender(QString cmd);
 
 public slots:
+    void buttonPausePlayLost(void);
 private :
     void paintEvent(QPaintEvent *event);
 

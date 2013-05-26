@@ -3,13 +3,7 @@
 ControlBar::ControlBar(QWidget *parent) :
     QDockWidget(parent)
 {
-    //setWindowOpacity(0.7);
-    //this->setWindowOpacity(0);
-    //QPalette pal = palette();
-    //pal.setColor(QPalette::Background, QColor(0x00,0xff,0x00,0x00));
 
-    //setPalette(pal);
-    //setAutoFillBackground(true);
     this->setFixedHeight(100);
     this->setMinimumWidth(300);
     this->setMaximumWidth(800);
@@ -21,6 +15,11 @@ ControlBar::ControlBar(QWidget *parent) :
     this->pushbutton_forward = new QPushButton();
     this->pushbutton_mute = new QPushButton();
     this->pushbutton_play_pause = new QPushButton();
+
+    this->pushbutton_back->setIcon(QIcon(":/img/images/gtk-media-next-rtl.png"));
+    this->pushbutton_forward->setIcon(QIcon(":/img/images/gtk-media-next-ltr.png"));
+    this->pushbutton_play_pause->setIcon(QIcon(":/img/images/gtk-media-play-ltr.png"));
+    this->pushbutton_mute->setIcon(QIcon(":/img/images/sound.png"));
 
     this->pushbutton_back->setFixedSize(30,30);
     this->pushbutton_forward->setFixedSize(30,30);
@@ -34,8 +33,7 @@ ControlBar::ControlBar(QWidget *parent) :
     QWidget *backGround = new QWidget();
     backGround->setLayout(backLayout);
     this->setWidget(backGround);
-
-
+    connect(this->pushbutton_play_pause,SIGNAL(clicked()),this,SLOT(buttonPausePlayLost()));
 }
 void ControlBar::paintEvent(QPaintEvent *event)
 {
@@ -43,4 +41,14 @@ void ControlBar::paintEvent(QPaintEvent *event)
     //p.setCompositionMode(QPainter::CompositionMode_Clear);
     //p.fillRect(10,10,300,300,Qt::SolidPattern);
     //p.fillRect(10,10,300,300, QColor(0,0xff,0,30));
+}
+void ControlBar::buttonPausePlayLost(void)
+{
+    static bool play = true;
+    play = play? false:true;
+    if (!play)
+        this->pushbutton_play_pause->setIcon(QIcon(":/img/images/gtk-media-play-ltr.png"));
+    else
+        this->pushbutton_play_pause->setIcon(QIcon(":/img/images/gtk-media-pause.png"));
+    emit this->playerCmdSender("pause\n");
 }

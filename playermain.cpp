@@ -32,13 +32,14 @@ PlayerMain::PlayerMain(QWidget *parent) :
     this->controlBar = new ControlBar();
     this->addDockWidget(Qt::BottomDockWidgetArea,(QDockWidget *)(this->controlBar));
     this->controlBar->setFloating(true);
+    connect(this->controlBar,SIGNAL(playerCmdSender(QString)),this,SLOT(playerControlCmdSlots(QString)));
     this->addDockWidget(Qt::NoDockWidgetArea,this->controlBar);
 
 
-    this->widgetPlayMain = new QWidget();
-    this->widgetPlayMain->setGeometry(0,0,400,200);
-    this->setMinimumSize(400,200);
-    this->widgetPlayMain->show();
+    //this->widgetPlayMain = new QWidget();
+    //this->widgetPlayMain->setGeometry(0,0,400,200);
+    //this->setMinimumSize(400,200);
+    //this->widgetPlayMain->show();
     this->hide();
 
 }
@@ -52,7 +53,9 @@ bool PlayerMain::playMovieSource(QString media,QString lrc)
 {
 
     this->processPlay->close();
-    this->playCmd = QString("mplayer -slave  -quiet %1 -wid %2").arg(media).arg(this->widgetPlayMain->winId());
+    //this->playCmd = QString("mplayer -slave  -quiet %1 -wid %2").arg(media).arg(this->widgetPlayMain->winId());
+    this->playCmd = QString("mplayer -slave  -quiet %1 -wid %2").arg(media).arg(ui->widgetPlayMain->winId());
+
     qDebug()<<"movie ->  "<<media<<lrc<<this->playCmd ;
     this->processPlay->start(this->playCmd);
     return true;
@@ -68,6 +71,12 @@ bool PlayerMain::playMusicSource(QString media,QString lrc)
     qDebug()<<"music ->  "<<media<<lrc<<this->playCmd;
     this->processPlay->start(this->playCmd);
     return true;
+}
+void PlayerMain::playerControlCmdSlots(QString cmd)
+{
+    qDebug()<<"input cmd --> "<<cmd;
+    this->processPlay->write(cmd.toAscii());
+    qDebug()<<this->processPlay->readAll();
 }
 
 

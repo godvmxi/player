@@ -32,10 +32,12 @@ class PlayerMain : public QMainWindow
 public:
     explicit PlayerMain(QWidget *parent = 0);
     ~PlayerMain();
+    QProcess * processPlay;
 
 public slots:
     bool playMovieSource(QString media,QString lrc);
     bool playMusicSource(QString media,QString lrc);
+    void playerControlCmdSlots(QString);
 
 private:
     Ui::PlayerMain *ui;
@@ -54,7 +56,7 @@ private:
 
     ControlBar *controlBar;
 
-    QProcess * processPlay;
+
     QString playCmd;
     QWidget *widgetPlayMain;
 
