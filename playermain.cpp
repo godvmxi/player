@@ -33,12 +33,25 @@ PlayerMain::PlayerMain(QWidget *parent) :
     this->addDockWidget(Qt::BottomDockWidgetArea,(QDockWidget *)(this->controlBar));
     this->controlBar->setFloating(true);
     connect(this->controlBar,SIGNAL(playerCmdSender(QString)),this,SLOT(playerControlCmdSlots(QString)));
+<<<<<<< HEAD
    // this->addDockWidget(Qt::NoDockWidgetArea,this->controlBar);
 
     this->lrc = new lrcWidget();
     this->lrc->setFixedSize(100,100);
     this->addDockWidget(Qt::BottomDockWidgetArea,this->lrc);
     this->lrc->setFloating(true);
+=======
+    //this->addDockWidget(Qt::NoDockWidgetArea,this->controlBar);
+
+    this->lrc  = new lrcWidget();
+    this->addDockWidget(Qt::BottomDockWidgetArea,this->lrc);
+    this->lrc->setFloating(true);
+    //this->widgetPlayMain = new QWidget();
+    //this->widgetPlayMain->setGeometry(0,0,400,200);
+    //this->setMinimumSize(400,200);
+    //this->widgetPlayMain->show();
+    this->hide();
+>>>>>>> eeef18499b316077e94987f781ec318b9164866d
 
 }
 
