@@ -7,6 +7,8 @@
 #include <QPushButton>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
+#include <QComboBox>
+#include "playlist.h"
 class ControlBar : public QDockWidget
 {
     Q_OBJECT
@@ -17,7 +19,10 @@ signals:
     void playerCmdSender(QString cmd);
 
 public slots:
-    void buttonPausePlayLost(void);
+    void buttonPausePlaySlot(void);
+    void buttonBackSlot(void);
+    void buttonForwardSlot(void);
+    void buttonMuteSlot(void);
 private :
     void paintEvent(QPaintEvent *event);
 
@@ -25,6 +30,9 @@ private :
     QPushButton *pushbutton_forward;
     QPushButton *pushbutton_back;
     QPushButton *pushbutton_mute;
+    QComboBox *modebox;
+    PlayList *playlist;
+
 
 };
 

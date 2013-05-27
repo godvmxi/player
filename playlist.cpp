@@ -3,7 +3,6 @@
 PlayList::PlayList(QWidget *parent) :
     QDockWidget(parent)
 {
-
     this->setFloating(true);
     this->setFeatures(QDockWidget::DockWidgetMovable|QDockWidget::DockWidgetFloatable);
     this->setFixedWidth(300);
@@ -312,6 +311,8 @@ void PlayList::musicClick(const QModelIndex &index)
 void PlayList::musicDoubleClick(int row, int column)
 {
     qDebug()<<"music click"<<row<<column<<this->tableWidgePlayListMusic->item(row,2)->text()<<this->tableWidgePlayListMusic->item(row,3)->text();
+    this->currentMusicIndex = row;
+    qDebug()<<"currentindex --> "<< currentMusicIndex;
     emit playMusic(this->tableWidgePlayListMusic->item(row,2)->text(),this->tableWidgePlayListMusic->item(row,3)->text());
 
 }
@@ -345,6 +346,14 @@ void PlayList::getNextMusic(int playMode)
     }
     if(index >= 0)
         emit playMusic(this->tableWidgePlayListMusic->item(index,2)->text(),this->tableWidgePlayListMusic->item(index,3)->text());
+}
+void PlayList::getBackMusic()// play back
+{
+     qDebug()<<"play back --> ";
+     this->currentMusicIndex -= 1;
+     qDebug()<<"currentindex --> "<< this->currentMusicIndex;
+     //qDebug()<<"currentindex --> "<< this->currentMusicIndex;
+    // emit playMusic(this->tableWidgePlayListMusic->item(index,2)->text(),this->tableWidgePlayListMusic->item(index,3)->text());
 }
 void PlayList::playNextMusic(int playMode)
 {

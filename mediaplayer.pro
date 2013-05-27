@@ -13,11 +13,13 @@ TEMPLATE = app
 SOURCES += main.cpp\
         playermain.cpp \
     playlist.cpp \
-    controlbar.cpp
+    controlbar.cpp \
+    lrcwidget.cpp
 
 HEADERS  += playermain.h \
     playlist.h \
-    controlbar.h
+    controlbar.h \
+    lrcwidget.h
 
 FORMS    += playermain.ui
 

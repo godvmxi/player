@@ -17,7 +17,7 @@
 #include <QTableView>
 #include <QProcess>
 #include <QWidget>
-
+#include "lrcwidget.h"
 #include "controlbar.h"
 #include "playlist.h"
 
@@ -59,6 +59,7 @@ private:
 
     QString playCmd;
     QWidget *widgetPlayMain;
+    lrcWidget *lrc;
 
 };
 

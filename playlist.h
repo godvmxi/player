@@ -21,6 +21,8 @@ class PlayList : public QDockWidget
 {
     Q_OBJECT
 public:
+  //  int currentMusicIndex;
+    QTableWidget *tableWidgePlayListMusic;
     explicit PlayList(QWidget *parent = 0);
 
 signals:
@@ -29,6 +31,7 @@ signals:
 
 public slots:
     void getNextMusic(int playMode);
+     void getBackMusic();
 private slots:
     void addMusicSlot(void);
     void addMovieSlot(void);
@@ -38,7 +41,7 @@ private slots:
     void musicDoubleClick(int row, int column);
     void movieDoubleClick(int row, int column);
 private:
-    QTableWidget *tableWidgePlayListMusic;
+   // QTableWidget *tableWidgePlayListMusic;
     QTableWidget *tableWidgePlayListMovie;
     QTabWidget *tabWidgetPlayList;
     QPushButton *pushButtonAddMusic;
