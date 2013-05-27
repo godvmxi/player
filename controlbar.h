@@ -23,6 +23,7 @@ public slots:
     void buttonBackSlot(void);
     void buttonForwardSlot(void);
     void buttonMuteSlot(void);
+
 private :
     void paintEvent(QPaintEvent *event);
 
@@ -32,6 +33,8 @@ private :
     QPushButton *pushbutton_mute;
     QComboBox *modebox;
     PlayList *playlist;
+
+    int playmode;
 
 
 };
