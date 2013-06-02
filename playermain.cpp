@@ -38,16 +38,18 @@ PlayerMain::PlayerMain(QWidget *parent) :
     connect(this->controlBar,SIGNAL(modeChanged(int)),this->dock_playlist,SLOT(getplayMode(int)));
     connect(this,SIGNAL(getNextMedia()),this->dock_playlist,SLOT(getNextMusic()));
 
-    this->lrc = new lrcWidget();
-    this->lrc->setFixedSize(100,100);
-    this->addDockWidget(Qt::BottomDockWidgetArea,this->lrc);
-    this->lrc->setFloating(true);
+//    this->lrc = new lrcWidget();
+//    this->lrc->setFixedSize(100,100);
+//    this->addDockWidget(Qt::BottomDockWidgetArea,this->lrc);
+//    this->lrc->setFloating(true);
 
     //this->addDockWidget(Qt::NoDockWidgetArea,this->controlBar);
 
     this->lrc  = new lrcWidget();
     this->addDockWidget(Qt::BottomDockWidgetArea,this->lrc);
     this->lrc->setFloating(true);
+
+
     //this->widgetPlayMain = new QWidget();
     //this->widgetPlayMain->setGeometry(0,0,400,200);
     //this->setMinimumSize(400,200);
@@ -84,7 +86,7 @@ bool PlayerMain::playMovieSource(QString media,QString lrc)
 bool PlayerMain::playMusicSource(QString media,QString lrc)
 {
 
-
+    this->lrc->setLrcPath(lrc);
     this->processPlay->close();
     media = media.replace(" ","\ ");
     this->playCmd = QString("mplayer -vo x11 -zoom -quiet -slave -idle \"%1\"").arg(media);
