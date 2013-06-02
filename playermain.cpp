@@ -18,11 +18,9 @@ PlayerMain::PlayerMain(QWidget *parent) :
     //video->start(cmd);
     this->processPlay = new QProcess(this);
     this->processPlay->setProcessChannelMode(QProcess::MergedChannels);
-
-
+    connect(this->processPlay,SIGNAL(stateChanged(QProcess::ProcessState)),this,SLOT(mediaStateChanged(QProcess::ProcessState)));
 
     dock_playlist = new PlayList(this);
-
     dock_playlist->setFloating(true);
     this->addDockWidget(Qt::NoDockWidgetArea,this->dock_playlist);
 
@@ -33,14 +31,18 @@ PlayerMain::PlayerMain(QWidget *parent) :
     this->addDockWidget(Qt::BottomDockWidgetArea,(QDockWidget *)(this->controlBar));
     this->controlBar->setFloating(true);
     connect(this->controlBar,SIGNAL(playerCmdSender(QString)),this,SLOT(playerControlCmdSlots(QString)));
-<<<<<<< HEAD
-   // this->addDockWidget(Qt::NoDockWidgetArea,this->controlBar);
+    connect(this->controlBar,SIGNAL(BackMusic(bool)),this->dock_playlist,SLOT(getBackMusic(bool)));
+    connect(this->controlBar,SIGNAL(ForwardMusic(bool)),this->dock_playlist,SLOT(getForwardMusic(bool)));
+    connect(this->controlBar->slider_progress,SIGNAL(valueChanged(int)),this,SLOT(mediaProgessChanged(int)));
+
+    connect(this->controlBar,SIGNAL(modeChanged(int)),this->dock_playlist,SLOT(getplayMode(int)));
+    connect(this,SIGNAL(getNextMedia()),this->dock_playlist,SLOT(getNextMusic()));
 
     this->lrc = new lrcWidget();
     this->lrc->setFixedSize(100,100);
     this->addDockWidget(Qt::BottomDockWidgetArea,this->lrc);
     this->lrc->setFloating(true);
-=======
+
     //this->addDockWidget(Qt::NoDockWidgetArea,this->controlBar);
 
     this->lrc  = new lrcWidget();
@@ -51,18 +53,25 @@ PlayerMain::PlayerMain(QWidget *parent) :
     //this->setMinimumSize(400,200);
     //this->widgetPlayMain->show();
     this->hide();
->>>>>>> eeef18499b316077e94987f781ec318b9164866d
-
 }
 
 PlayerMain::~PlayerMain()
 {
     delete ui;
 }
+void PlayerMain::mediaStateChanged(QProcess::ProcessState newstate)
+{
+    if(newstate == QProcess::NotRunning)
+        emit getNextMedia();
+}
+void PlayerMain::mediaProgessChanged(int Newprogess)
+{
+
+}
 
 bool PlayerMain::playMovieSource(QString media,QString lrc)
 {
-
+    //add your lrc set method
     this->processPlay->close();
     //this->playCmd = QString("mplayer -slave  -quiet %1 -wid %2").arg(media).arg(this->widgetPlayMain->winId());
     this->playCmd = QString("mplayer -slave  -quiet %1 -wid %2").arg(media).arg(ui->widgetPlayMain->winId());

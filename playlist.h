@@ -3,10 +3,10 @@
 
 #include <QDockWidget>
 #include <QTableView>
-#include<QTableWidget>
+#include <QTableWidget>
 #include <QTabWidget>
 #include <QPushButton>
-#include<QDebug>
+#include <QDebug>
 #include <QCalendarWidget>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
@@ -16,23 +16,38 @@
 #include <QDomDocument>
 #include <QFile>
 #include <QTime>
+#include <QProcess>
 
 class PlayList : public QDockWidget
 {
     Q_OBJECT
 public:
-  //  int currentMusicIndex;
     QTableWidget *tableWidgePlayListMusic;
+
     explicit PlayList(QWidget *parent = 0);
 
 signals:
+
     void playMusic(QString music,QString lrc);
     void playMovie(QString movie,QString subtitle);
 
+    void readyBackMusic();
+    void readyForwardMusic();
+    void readyModeMusic();
+
 public slots:
-    void getNextMusic(int playMode);
-     void getBackMusic();
+
+
+
 private slots:
+
+    void getBackMusic(bool);
+    void getForwardMusic(bool);
+    void getplayMode(int);
+
+
+
+    void getNextMusic();
     void addMusicSlot(void);
     void addMovieSlot(void);
     void savePlayList();
@@ -50,6 +65,9 @@ private:
 
     int currentMusicIndex;
     int currentMovieIndex;
+    int playMode;
+    bool back;
+    bool forward;
 
     bool autoLoadPlayList(void);
     void playNextMusic(int playMode);

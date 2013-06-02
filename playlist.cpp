@@ -3,6 +3,8 @@
 PlayList::PlayList(QWidget *parent) :
     QDockWidget(parent)
 {
+    back=false;
+    this->currentMusicIndex = -1;
     this->setFloating(true);
     this->setFeatures(QDockWidget::DockWidgetMovable|QDockWidget::DockWidgetFloatable);
     this->setFixedWidth(300);
@@ -52,6 +54,7 @@ PlayList::PlayList(QWidget *parent) :
     connect(this->pushButtonAddMovie,SIGNAL(clicked()),SLOT(addMovieSlot()));
     connect(this->pushButtonSavePlayList,SIGNAL(clicked()),SLOT(savePlayList()));
 
+
     QVBoxLayout *vBoxLayout =  new QVBoxLayout();
     QHBoxLayout *layoutTop =  new QHBoxLayout();
     QWidget      *widgeTop = new QWidget();
@@ -68,9 +71,9 @@ PlayList::PlayList(QWidget *parent) :
     this->setWidget(back);
     this->setMinimumHeight(400);
 
+    connect(this,SIGNAL(readyForwardMusic()),this,SLOT(getNextMusic()));
+    connect(this,SIGNAL(readyBackMusic()),this,SLOT(getNextMusic()));
     autoLoadPlayList();
-
-
 
 }
 bool PlayList::autoLoadPlayList(void)
@@ -284,10 +287,6 @@ void PlayList::savePlayList()
     xml->save(out,4);
     fileSave->close();
 
-
-
-
-
     this->pushButtonAddMovie->setDisabled(false);
     this->pushButtonAddMusic->setDisabled(false);
     this->pushButtonSavePlayList->setDisabled(false);
@@ -312,12 +311,16 @@ void PlayList::musicDoubleClick(int row, int column)
 {
     qDebug()<<"music click"<<row<<column<<this->tableWidgePlayListMusic->item(row,2)->text()<<this->tableWidgePlayListMusic->item(row,3)->text();
     this->currentMusicIndex = row;
-    qDebug()<<"currentindex --> "<< currentMusicIndex;
+    qDebug()<<"currentindex --> "<< this->currentMusicIndex;
     emit playMusic(this->tableWidgePlayListMusic->item(row,2)->text(),this->tableWidgePlayListMusic->item(row,3)->text());
-
+}
+void PlayList::getplayMode(int mode)
+{
+    playMode=mode;
+  //  emit readyModeMusic();
 }
 
-void PlayList::getNextMusic(int playMode)
+void PlayList::getNextMusic()
 {
     qDebug()<<"get Next Music ->"<<playMode;
     QTime time;
@@ -328,32 +331,57 @@ void PlayList::getNextMusic(int playMode)
     switch(playMode)
     {
     case 0://play one
-        index = -1;
+     //   index = -1;
         break;
     case 1://play ones
         index =this->currentMusicIndex;
-            break;
+        if(back || forward)
+        {
+            index =this->currentMusicIndex;
+            emit playMusic(this->tableWidgePlayListMusic->item(index,2)->text(),this->tableWidgePlayListMusic->item(index,3)->text());
+        }
+        break;
     case 2://play normal
-        index = ++this->currentMusicIndex;
+        index = this->currentMusicIndex+1;
+        if(back)
+        {
+             index -= 2;
+             if(index < 0)
+                 index = this->tableWidgePlayListMusic->rowCount()-1;
+             emit playMusic(this->tableWidgePlayListMusic->item(index,2)->text(),this->tableWidgePlayListMusic->item(index,3)->text());
+             this->currentMusicIndex = index;
+        }
+        if(forward)
+        {
+            if(index > this->tableWidgePlayListMusic->rowCount()-1)
+                index = 0;
+             emit playMusic(this->tableWidgePlayListMusic->item(index,2)->text(),this->tableWidgePlayListMusic->item(index,3)->text());
+             this->currentMusicIndex = index;
+        }
         break;
     case 3://play random
-
-        index = qrand()%( this->tableWidgePlayListMusic->rowCount() );
+        index = qrand()%( this->tableWidgePlayListMusic->rowCount());
+        if(back || forward)
+        {
+           emit playMusic(this->tableWidgePlayListMusic->item(index,2)->text(),this->tableWidgePlayListMusic->item(index,3)->text());
+           this->currentMusicIndex = index;
+        }
         break;
     default:
         index = -1;
         break;
     }
-    if(index >= 0)
-        emit playMusic(this->tableWidgePlayListMusic->item(index,2)->text(),this->tableWidgePlayListMusic->item(index,3)->text());
+   //  this->currentMusicIndex = index;
 }
-void PlayList::getBackMusic()// play back
+void PlayList::getBackMusic(bool b)// play back
 {
-     qDebug()<<"play back --> ";
-     this->currentMusicIndex -= 1;
-     qDebug()<<"currentindex --> "<< this->currentMusicIndex;
-     //qDebug()<<"currentindex --> "<< this->currentMusicIndex;
-    // emit playMusic(this->tableWidgePlayListMusic->item(index,2)->text(),this->tableWidgePlayListMusic->item(index,3)->text());
+    back = !b;
+    qDebug()<<"get back music --> "<<back;
+}
+void PlayList::getForwardMusic(bool f)// play forward
+{
+    forward = !f;
+    qDebug()<<"get forward music --> "<<forward;
 }
 void PlayList::playNextMusic(int playMode)
 {

@@ -3,8 +3,6 @@
 ControlBar::ControlBar(QWidget *parent) :
     QDockWidget(parent)
 {
-     playlist=new PlayList();
-
     this->setFixedHeight(100);
     this->setMinimumWidth(300);
     this->setMaximumWidth(800);
@@ -16,40 +14,50 @@ ControlBar::ControlBar(QWidget *parent) :
     this->pushbutton_forward = new QPushButton();
     this->pushbutton_mute = new QPushButton();
     this->pushbutton_play_pause = new QPushButton();
+    this->pushbutton_fastrewinding = new QPushButton();
+
+    this->slider_progress = new QSlider(Qt::Horizontal);
     this->modebox=new QComboBox();
 
     this->pushbutton_back->setIcon(QIcon(":/img/images/gtk-media-next-rtl.png"));
     this->pushbutton_forward->setIcon(QIcon(":/img/images/gtk-media-next-ltr.png"));
     this->pushbutton_play_pause->setIcon(QIcon(":/img/images/gtk-media-play-ltr.png"));
     this->pushbutton_mute->setIcon(QIcon(":/img/images/sound.png"));
-    this->modebox->setEditText("mode");
+    this->pushbutton_fastrewinding->setIcon(QIcon(":/img/images/next.png"));
+  // this->modebox->setEditText("mode");
 
     this->pushbutton_back->setFixedSize(30,30);
     this->pushbutton_forward->setFixedSize(30,30);
     this->pushbutton_mute->setFixedSize(30,30);
     this->pushbutton_play_pause->setFixedSize(30,30);
+    this->pushbutton_play_pause->setFixedSize(30,30);
+    this->slider_progress->setFixedSize(150,50);
+
     this->modebox->setFixedSize(110,30);
 
     QHBoxLayout *HbackLayout = new QHBoxLayout();
     HbackLayout->addWidget(this->pushbutton_back);
     HbackLayout->addWidget(this->pushbutton_play_pause);
+    HbackLayout->addWidget(this->pushbutton_fastrewinding);
     HbackLayout->addWidget(this->pushbutton_forward);
     HbackLayout->addWidget(this->pushbutton_mute);
+    HbackLayout->addWidget(this->slider_progress);
     HbackLayout->addWidget(this->modebox);
     QWidget *backGround = new QWidget();
     backGround->setLayout(HbackLayout);
     this->setWidget(backGround);
 
+    this->modebox->addItem("play once");
     this->modebox->addItem("Single cycle");
-    this->modebox->addItem("List cycle");
-    this->modebox->addItem("Random");
     this->modebox->addItem("Normal");
+    this->modebox->addItem("Random");
 
-    connect(this->pushbutton_play_pause,SIGNAL(clicked()),this,SLOT(buttonPausePlaySlot()));
-    connect(this->pushbutton_back,SIGNAL(clicked()),playlist,SLOT(getBackMusic()));
-    connect(this->pushbutton_forward,SIGNAL(clicked()),this,SLOT(buttonForwardSlot(void)));
+    connect(this->pushbutton_play_pause,SIGNAL(clicked(void)),this,SLOT(buttonPausePlaySlot(void)));
     connect(this->pushbutton_mute,SIGNAL(clicked()),this,SLOT(buttonMuteSlot()));
-    connect(this->modebox,SIGNAL(activated(int)),this,SLOT());
+    connect(this->pushbutton_back,SIGNAL(clicked(bool)),this,SLOT(buttonBackSlot(bool)));
+    connect(this->pushbutton_forward,SIGNAL(clicked(bool)),this,SLOT(buttonForwardSlot(bool)));
+    connect(this->modebox,SIGNAL(activated(int)),this,SLOT(modeBoxSlot(int)));
+    connect(this->pushbutton_fastrewinding,SIGNAL(clicked()),this,SLOT(buttonFastrewinding()));
 
 }
 void ControlBar::paintEvent(QPaintEvent *event)
@@ -68,19 +76,27 @@ void ControlBar::buttonPausePlaySlot(void)
     else
         this->pushbutton_play_pause->setIcon(QIcon(":/img/images/gtk-media-pause.png"));
     emit this->playerCmdSender("pause\n");
- //   emit this->playerCmdSender("get_time_pos\n");
 }
-void ControlBar::buttonBackSlot(void)
+void ControlBar::buttonFastrewinding()
 {
-
-}
-void ControlBar::buttonForwardSlot(void)
-{
-    qDebug()<<"play forward --> ";
+     emit this->playerCmdSender("seek 22\n");
 }
 void ControlBar::buttonMuteSlot(void)
 {
-    static bool mute = false;
-    mute = mute? false:true;
     emit this->playerCmdSender("mute\n");
+   // emit this->playerCmdSender("get_time_pos\n");
+   //  emit this->playerCmdSender("get_time_length\n");
 }
+void ControlBar::buttonBackSlot(bool back)
+{
+    emit BackMusic(back);
+}
+void ControlBar::buttonForwardSlot(bool forward)
+{
+    emit ForwardMusic(forward);
+}
+void ControlBar::modeBoxSlot(int mode)
+{
+    emit modeChanged(mode);
+}
+

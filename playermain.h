@@ -32,34 +32,44 @@ class PlayerMain : public QMainWindow
 public:
     explicit PlayerMain(QWidget *parent = 0);
     ~PlayerMain();
-    QProcess * processPlay;
+
+signals:
+    void  getNextMedia();
 
 public slots:
+
+private slots:
+
     bool playMovieSource(QString media,QString lrc);
     bool playMusicSource(QString media,QString lrc);
     void playerControlCmdSlots(QString);
+    void mediaStateChanged(QProcess::ProcessState);
+    void mediaProgessChanged(int);
 
 private:
     Ui::PlayerMain *ui;
-    QPushButton *pushbutton_play_pause;
+  /*  QPushButton *pushbutton_play_pause;
     QPushButton *pushbutton_forward;
     QPushButton *pushbutton_back;
     QPushButton *pushbutton_mute;
     QDial *dial_vol;
     QComboBox *combobox_lrc;
-    PlayList *dock_playlist;
+
     QDockWidget *dock_control;
 
     QTableView *tabview_playlist_music;
     QTableView *tabview_playlist_video;
     QTabWidget *tabwidge_playlist_tab;
+*/
+    QWidget *widgetPlayMain;
+    QProcess * processPlay;
 
     ControlBar *controlBar;
-
-
-    QString playCmd;
-    QWidget *widgetPlayMain;
+    PlayList *dock_playlist;
     lrcWidget *lrc;
+
+    int playMode;
+    QString playCmd;
 
 };
 

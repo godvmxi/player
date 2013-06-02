@@ -7,32 +7,39 @@
 #include <QPushButton>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
+#include <QSlider>
 #include <QComboBox>
-#include "playlist.h"
 class ControlBar : public QDockWidget
 {
     Q_OBJECT
 public:
     explicit ControlBar(QWidget *parent = 0);
+    QSlider *slider_progress;
 
 signals:
     void playerCmdSender(QString cmd);
+    void BackMusic(bool);
+    void ForwardMusic(bool);
+    void modeChanged(int);
 
-public slots:
+private slots:
     void buttonPausePlaySlot(void);
-    void buttonBackSlot(void);
-    void buttonForwardSlot(void);
     void buttonMuteSlot(void);
+    void buttonBackSlot(bool);
+    void buttonForwardSlot(bool);
+    void modeBoxSlot(int);
+    void buttonFastrewinding();
 
 private :
     void paintEvent(QPaintEvent *event);
-
     QPushButton *pushbutton_play_pause;
+    QPushButton *pushbutton_mute;
     QPushButton *pushbutton_forward;
     QPushButton *pushbutton_back;
-    QPushButton *pushbutton_mute;
+
+    QPushButton *pushbutton_fastrewinding;
     QComboBox *modebox;
-    PlayList *playlist;
+
 
     int playmode;
 
