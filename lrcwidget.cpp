@@ -6,23 +6,43 @@ lrcWidget::lrcWidget(QWidget *parent) :
 
     this->setFeatures(QDockWidget::DockWidgetFloatable);
     this->setFeatures(QDockWidget::DockWidgetMovable|QDockWidget::DockWidgetFloatable);
-    this->setFixedSize(300,600);
-
+    //this->setFixedSize(300,600);
+    this->setFixedWidth(300);
 
     this->lrclabel_1=new QLabel();
-    this->lrclabel_1->setText("hello1");
+    this->lrclabel_1->setText("design by fengjiao");
 
     this->lrclabel_2=new QLabel();
-    this->lrclabel_2->setText("hello2");
+    this->lrclabel_2->setText("lrc");
+    QFont ft;
+    ft.setBold(true);
+    ft.setFamily("simsun");
+    ft.setPointSize(15);
+    this->lrclabel_1->setFont(ft);
+    QFont ft2 =ft;
+    ft2.setPointSize(12);
+    ft2.setBold(false);
+    this->lrclabel_2->setFont(ft2);
+
+    //this->lrclabel_1->setMinimumHeight(50);
+    //this->lrclabel_1->setMaximumHeight(200);
+    //this->lrclabel_2->setMinimumHeight(50);
+    //this->lrclabel_2->setMaximumHeight(200);
+    this->lrclabel_1->setFixedHeight(60);
+    this->lrclabel_2->setFixedHeight(60);
 
     QVBoxLayout *backLayout = new QVBoxLayout();
     backLayout->addWidget(this->lrclabel_1);
     backLayout->addWidget(this->lrclabel_2);
+
+
     QWidget *backGround = new QWidget();
+    //backGround->setMaximumHeight(300);
     backGround->setLayout(backLayout);
     this->setWidget(backGround);
 
-    this->setFixedSize(300,100);
+
+
     this->setFeatures(QDockWidget::DockWidgetFloatable);
     this->setFeatures(QDockWidget::DockWidgetMovable|QDockWidget::DockWidgetFloatable);
     this->lrcTimer = new QTimer();
@@ -56,7 +76,8 @@ bool lrcWidget::anaylseLrcFile(QString file)
         return false;
     }
     this->lrcState = true;
-    lrcText.clear();
+    this->lrcText.clear();
+    this->lrcTextIndex = 0;
     while(true)
     {
         QString line = lrcFile.readLine();
@@ -87,12 +108,12 @@ bool lrcWidget::anaylseLrcFile(QString file)
 }
 bool lrcWidget::setLrcTime(quint64 time)
 {
-
+    this->timer = time;
 }
 
 quint64 lrcWidget::getLrcTime(void)
 {
-
+    return this->timer;
 }
 
 quint64 lrcWidget::startStopLrc(bool type)
@@ -130,15 +151,31 @@ quint64 lrcWidget::playPauseLrc(bool type)
 }
 void lrcWidget::updateTimeOut(void)
 {
-    this->updateLabel("fuck");
+    LRC_CONTAIN tmp;
+    this->timer+=timerInterval;
+    if (this->lrcTextIndex >= this->lrcText.count())
+    {
+        qDebug()<<"all lrc deal over";
+        this->lrcTimer->stop();
+        return;
+    }
+    tmp = this->lrcText.at(this->lrcTextIndex);
+    qDebug()<<this->timer<<"  <--->"  <<tmp.time;
+    if (tmp.time <= this->timer )
+    {
+        this->updateLabel(tmp.lrc);
+        this->lrcTextIndex++;
+    }
+
 }
 
 bool lrcWidget::updateLabel(QString lrc)
 {
-    QString test;
+    static QString last;
     this->timer += timerInterval;
-    test = QString("current time -->  %1").arg(this->timer);
-    this->lrclabel_1->setText(test);
-    this->lrclabel_2->setText(test);
+
+    this->lrclabel_1->setText(last);
+    this->lrclabel_2->setText(lrc);
+    last = lrc;
 
 }

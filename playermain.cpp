@@ -87,11 +87,17 @@ bool PlayerMain::playMusicSource(QString media,QString lrc)
 {
 
     this->lrc->setLrcPath(lrc);
+    //this->lrc->startStopLrc(true);
+
     this->processPlay->close();
     media = media.replace(" ","\ ");
     this->playCmd = QString("mplayer -vo x11 -zoom -quiet -slave -idle \"%1\"").arg(media);
     qDebug()<<"music ->  "<<media<<lrc<<this->playCmd;
     this->processPlay->start(this->playCmd);
+
+    this->lrc->startStopLrc(true);
+
+
     return true;
 }
 void PlayerMain::playerControlCmdSlots(QString cmd)

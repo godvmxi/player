@@ -54,6 +54,7 @@ private:
     QLabel *lrclabel_2;
     bool lrcState ;
     QList<LRC_CONTAIN>  lrcText;
+    int lrcTextIndex ;
 
     QTimer *lrcTimer;
     quint64 timer;
