@@ -24,6 +24,7 @@ PlayerMain::PlayerMain(QWidget *parent) :
     dock_playlist->setFloating(true);
     this->addDockWidget(Qt::NoDockWidgetArea,this->dock_playlist);
 
+
     connect(this->dock_playlist,SIGNAL(playMusic(QString,QString)),this,SLOT(playMusicSource(QString,QString)));
     connect(this->dock_playlist,SIGNAL(playMovie(QString,QString)),this,SLOT(playMovieSource(QString,QString)));
 
@@ -38,12 +39,8 @@ PlayerMain::PlayerMain(QWidget *parent) :
     connect(this->controlBar,SIGNAL(modeChanged(int)),this->dock_playlist,SLOT(getplayMode(int)));
     connect(this,SIGNAL(getNextMedia()),this->dock_playlist,SLOT(getNextMusic()));
 
-//    this->lrc = new lrcWidget();
-//    this->lrc->setFixedSize(100,100);
-//    this->addDockWidget(Qt::BottomDockWidgetArea,this->lrc);
-//    this->lrc->setFloating(true);
 
-    //this->addDockWidget(Qt::NoDockWidgetArea,this->controlBar);
+
 
     this->lrc  = new lrcWidget();
     this->addDockWidget(Qt::BottomDockWidgetArea,this->lrc);
@@ -54,7 +51,24 @@ PlayerMain::PlayerMain(QWidget *parent) :
     //this->widgetPlayMain->setGeometry(0,0,400,200);
     //this->setMinimumSize(400,200);
     //this->widgetPlayMain->show();
-    this->hide();
+
+    this->musicStyle =new QLabel();
+    this->musicGif = new QMovie();
+    this->musicGif->setFileName(":/img/images/style.gif");
+    this->musicStyle->setMovie(this->musicGif);
+    this->musicGif->start();
+   // this->musicStyle->show();
+
+    //QSize tmp = ui->widgetPlayMain->size();
+    //this->musicStyle->setFixedSize(ui->widgetPlayMain->x()-10,ui->widgetPlayMain->y()-10);
+
+    QHBoxLayout *gif = new QHBoxLayout();
+    this->musicStyle->move(15,5);
+    gif->addWidget(this->musicStyle);
+    ui->widgetPlayMain->setLayout(gif);
+    //ui->widgetPlayMain->move(15,5);
+
+
 }
 
 PlayerMain::~PlayerMain()
@@ -76,10 +90,14 @@ bool PlayerMain::playMovieSource(QString media,QString lrc)
     //add your lrc set method
     this->processPlay->close();
     //this->playCmd = QString("mplayer -slave  -quiet %1 -wid %2").arg(media).arg(this->widgetPlayMain->winId());
-    this->playCmd = QString("mplayer -slave  -quiet %1 -wid %2").arg(media).arg(ui->widgetPlayMain->winId());
+    //this->playCmd = QString("mplayer -slave  -quiet %1 -wid %2").arg(media).arg(ui->widgetPlayMain->winId());
+
+    this->playCmd = QString("mplayer -slave  -quiet %1 -wid %2").arg(media).arg(ui->centralWidget->winId());
 
     qDebug()<<"movie ->  "<<media<<lrc<<this->playCmd ;
     this->processPlay->start(this->playCmd);
+
+    this->changBackGroud(false);
     return true;
 }
 
@@ -88,6 +106,8 @@ bool PlayerMain::playMusicSource(QString media,QString lrc)
 
     this->lrc->setLrcPath(lrc);
     //this->lrc->startStopLrc(true);
+
+    this->changBackGroud(true);
 
     this->processPlay->close();
     media = media.replace(" ","\ ");
@@ -106,5 +126,15 @@ void PlayerMain::playerControlCmdSlots(QString cmd)
     this->processPlay->write(cmd.toAscii());
     qDebug()<<this->processPlay->readAll();
 }
-
+void PlayerMain::changBackGroud(bool type)
+{
+    if(type){
+        //show music
+        ui->widgetPlayMain->show();
+    }
+    else{
+        //show movie
+        ui->widgetPlayMain->hide();
+    }
+}
 

@@ -27,5 +27,6 @@
         <file>images/Thumbs.db</file>
         <file>images/VMP2.png</file>
         <file>images/wma.png</file>
+        <file>images/style.gif</file>
     </qresource>
 </RCC>

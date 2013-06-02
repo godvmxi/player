@@ -21,6 +21,8 @@
 #include "controlbar.h"
 #include "playlist.h"
 #include "lrcwidget.h"
+#include <QLabel>
+#include<QMovie>
 namespace Ui {
     class PlayerMain;
 }
@@ -46,8 +48,12 @@ private slots:
     void mediaStateChanged(QProcess::ProcessState);
     void mediaProgessChanged(int);
 
+
 private:
     Ui::PlayerMain *ui;
+    void changBackGroud(bool type);
+    QLabel  *musicStyle;
+    QMovie  *musicGif;
   /*  QPushButton *pushbutton_play_pause;
     QPushButton *pushbutton_forward;
     QPushButton *pushbutton_back;
