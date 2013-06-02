@@ -130,6 +130,14 @@ void PlayerMain::changBackGroud(bool type)
 {
     if(type){
         //show music
+
+        //QStringList gifLib;
+        //gitLib <<":/img/images/style.gif"<<":/img/images/style1.gif"<<":/img/images/style2.gif"<<":/img/images/style3.gif";
+
+//        this->musicGif->stop();
+//        this->musicGif->setFileName(":/img/images/style.gif");
+//        this->musicGif->start();
+
         ui->widgetPlayMain->show();
     }
     else{
