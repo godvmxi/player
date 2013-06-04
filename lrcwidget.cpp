@@ -8,7 +8,9 @@ lrcWidget::lrcWidget(QWidget *parent) :
     this->setFeatures(QDockWidget::DockWidgetMovable|QDockWidget::DockWidgetFloatable);
     //this->setFixedSize(300,600);
     this->setFixedWidth(300);
-
+    QPalette palette = this->palette();
+    palette.setBrush(QPalette::Window,QBrush(QPixmap(":/img/images/17.jpg").scaled(this->size(),Qt::IgnoreAspectRatio,Qt::SmoothTransformation)));
+    this->setPalette(palette);
     this->lrclabel_1=new QLabel();
     this->lrclabel_1->setText("design by fengjiao");
 

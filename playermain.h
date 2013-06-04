@@ -23,6 +23,7 @@
 #include "lrcwidget.h"
 #include <QLabel>
 #include<QMovie>
+#include <QPalette>
 namespace Ui {
     class PlayerMain;
 }

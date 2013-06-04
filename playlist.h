@@ -17,6 +17,7 @@
 #include <QFile>
 #include <QTime>
 #include <QProcess>
+#include <QPalette>
 
 class PlayList : public QDockWidget
 {

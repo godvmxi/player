@@ -21,7 +21,7 @@
 #include <QDebug>
 #include<QFile>
 #include<QFileInfo>
-
+#include <QPalette>
 #define timerInterval 200
 typedef struct {
     quint64 time;

@@ -8,6 +8,7 @@
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <QSlider>
+#include <QPalette>
 #include <QComboBox>
 class ControlBar : public QDockWidget
 {
@@ -28,7 +29,8 @@ private slots:
     void buttonBackSlot(bool);
     void buttonForwardSlot(bool);
     void modeBoxSlot(int);
-    void buttonFastrewinding();
+    void buttonFastforward();
+    void buttonFastbackward();
 
 private :
     void paintEvent(QPaintEvent *event);
@@ -36,8 +38,8 @@ private :
     QPushButton *pushbutton_mute;
     QPushButton *pushbutton_forward;
     QPushButton *pushbutton_back;
-
-    QPushButton *pushbutton_fastrewinding;
+    QPushButton *pushbutton_fastforward;
+    QPushButton *pushbutton_fastbackward;
     QComboBox *modebox;
 
 

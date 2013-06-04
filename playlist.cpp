@@ -8,7 +8,9 @@ PlayList::PlayList(QWidget *parent) :
     this->setFloating(true);
     this->setFeatures(QDockWidget::DockWidgetMovable|QDockWidget::DockWidgetFloatable);
     this->setFixedWidth(300);
-
+    QPalette palette = this->palette();
+    palette.setBrush(QPalette::Window,QBrush(QPixmap(":/img/images/79.jpg").scaled(this->size(),Qt::IgnoreAspectRatio,Qt::SmoothTransformation)));
+    this->setPalette(palette);
     this->tableWidgePlayListMusic =  new QTableWidget();
 
     //this->tableWidgePlayListMusic->setRowCount(3);
@@ -163,7 +165,7 @@ void PlayList::addMusicSlot(void)
 void PlayList::addMovieSlot(void)
 {
     qDebug()<<"add movie";
-    QStringList fileList=QFileDialog::getOpenFileNames(this,tr("selete files to play"),"/home/","Movie (*.flv *.mp4 *.rmvb)");
+    QStringList fileList=QFileDialog::getOpenFileNames(this,tr("selete files to play"),"/home/","Movie (*.flv *.mp4 *.rmvb *.avi)");
     if(fileList.size()<=0)
     {
         QMessageBox::information(this,tr("No Movie added"),tr("No Movie added!"));
@@ -196,22 +198,37 @@ void PlayList::addMovieSlot(void)
             lrcAbsPath->setText(file.left(file.size()-3) + "lrc");
             //musicName->setIcon(QIcon(":/images/mp3.png"));
         }
-        else
-        {
+           else
+          {
 
-            if(file.endsWith(("rmvb"),Qt::CaseInsensitive))
-            {
+              if(file.endsWith(("rmvb"),Qt::CaseInsensitive))
+             {
                 //qDebug()<<"mp3 find lrc";
                 lrcIcon->setText("RMVB");
                 lrcIcon->setBackground(QBrush(QColor(Qt::green),Qt::SolidPattern));
                 lrcAbsPath->setText(file.left(file.size()-3) + "lrc");
                 //musicName->setIcon(QIcon(":/images/mp3.png"));
-            }
-            else
-            {
-                lrcIcon->setText("ERROR");
-                lrcIcon->setBackground(QBrush(QColor(Qt::red),Qt::SolidPattern));
              }
+
+             else
+             {
+
+                if(file.endsWith(("avi"),Qt::CaseInsensitive))
+                 {
+                    //qDebug()<<"mp3 find lrc";
+                    lrcIcon->setText("AVI");
+                    lrcIcon->setBackground(QBrush(QColor(Qt::green),Qt::SolidPattern));
+                    lrcAbsPath->setText(file.left(file.size()-3) + "lrc");
+                    //musicName->setIcon(QIcon(":/images/mp3.png"));
+                }
+                    else
+                    {
+                      lrcIcon->setText("ERROR");
+                      lrcIcon->setBackground(QBrush(QColor(Qt::red),Qt::SolidPattern));
+                    }
+
+
+                }
 
         }
 
@@ -223,6 +240,7 @@ void PlayList::addMovieSlot(void)
     }
 
 }
+
 void PlayList::savePlayList()
 {
     this->pushButtonAddMovie->setDisabled(true);
@@ -431,7 +449,7 @@ bool PlayList::loadPlayList(QString fileName)
     qDebug()<<"music list attr index - total -> "<<movieList.attributeNode("index").nodeValue()<<movieList.attributeNode("total").nodeValue();
     //check music total
     qDebug()<<"music list attr index -total -> "<<musicList.attributeNode("index").nodeValue()<<musicList.attributeNode("total").nodeValue();
-    if(musicList.attributeNode("total").nodeValue().toInt() !=musics.count())
+    if(musicList.attributeNode("total").nodeValue().toInt() != musics.count())
     {
         qDebug()<<"music list num parse error";
         return false;
@@ -524,8 +542,8 @@ bool PlayList::loadPlayList(QString fileName)
         //brand << music.attributeNode("brandName").nodeValue();
         QDomElement path = movie.firstChildElement();
         QString xmlPath;
-        QTableWidgetItem *lrcIcon = new QTableWidgetItem();//
-        QTableWidgetItem *lrcAbsPath = new QTableWidgetItem();//
+        QTableWidgetItem *lrcIcon = new QTableWidgetItem();
+        QTableWidgetItem *lrcAbsPath = new QTableWidgetItem();
         QTableWidgetItem *musicName = new QTableWidgetItem();
         QTableWidgetItem *musicAbsPath = new QTableWidgetItem();
 
@@ -548,6 +566,21 @@ bool PlayList::loadPlayList(QString fileName)
                 lrcIcon->setText("RMVB");
                 qDebug()<<"RMVB"<<xmlPath;
 
+            }
+            else if(xmlPath.endsWith("flv",Qt::CaseInsensitive))
+            {
+                musicAbsPath->setText(xmlPath);
+                musicName->setText(fileInfo.baseName());
+                lrcIcon->setText("FLV");
+                qDebug()<<"FLV"<<xmlPath;
+
+            }
+            else if(xmlPath.endsWith("avi",Qt::CaseInsensitive))
+            {
+                musicAbsPath->setText(xmlPath);
+                musicName->setText(fileInfo.baseName());
+                lrcIcon->setText("AVI");
+                qDebug()<<"AVI"<<xmlPath;
             }
             else if(xmlPath.endsWith("sub",Qt::CaseInsensitive))
             {

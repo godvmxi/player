@@ -20,6 +20,10 @@ PlayerMain::PlayerMain(QWidget *parent) :
     this->processPlay->setProcessChannelMode(QProcess::MergedChannels);
     connect(this->processPlay,SIGNAL(stateChanged(QProcess::ProcessState)),this,SLOT(mediaStateChanged(QProcess::ProcessState)));
 
+    QPalette palette = this->palette();
+    palette.setBrush(QPalette::Window,QBrush(QPixmap(":/img/images/music.jpg").scaled(this->size(),Qt::IgnoreAspectRatio,Qt::SmoothTransformation)));
+    this->setPalette(palette);
+
     dock_playlist = new PlayList(this);
     dock_playlist->setFloating(true);
     this->addDockWidget(Qt::NoDockWidgetArea,this->dock_playlist);
@@ -52,21 +56,18 @@ PlayerMain::PlayerMain(QWidget *parent) :
     //this->setMinimumSize(400,200);
     //this->widgetPlayMain->show();
 
-    this->musicStyle =new QLabel();
-    this->musicGif = new QMovie();
-    this->musicGif->setFileName(":/img/images/style.gif");
-    this->musicStyle->setMovie(this->musicGif);
-    this->musicGif->start();
-   // this->musicStyle->show();
+//    this->musicStyle =new QLabel();
+//    this->musicGif = new QMovie();
+//    this->musicGif->setFileName(":/img/images/style.gif");
+//    this->musicStyle->setMovie(this->musicGif);
+//    this->musicGif->start();
 
-    //QSize tmp = ui->widgetPlayMain->size();
-    //this->musicStyle->setFixedSize(ui->widgetPlayMain->x()-10,ui->widgetPlayMain->y()-10);
+//    QHBoxLayout *gif = new QHBoxLayout();
+//    this->musicStyle->move(15,5);
+//    gif->addWidget(this->musicStyle);
 
-    QHBoxLayout *gif = new QHBoxLayout();
-    this->musicStyle->move(15,5);
-    gif->addWidget(this->musicStyle);
-    ui->widgetPlayMain->setLayout(gif);
-    //ui->widgetPlayMain->move(15,5);
+ //   ui->widgetPlayMain->setLayout(gif);
+    ui->widgetPlayMain->move(15,5);
 
 
 }
@@ -128,21 +129,21 @@ void PlayerMain::playerControlCmdSlots(QString cmd)
 }
 void PlayerMain::changBackGroud(bool type)
 {
-    if(type){
-        //show music
+//    if(type){
+//        //show music
 
-        //QStringList gifLib;
-        //gitLib <<":/img/images/style.gif"<<":/img/images/style1.gif"<<":/img/images/style2.gif"<<":/img/images/style3.gif";
+//        //QStringList gifLib;
+//        //gitLib <<":/img/images/style.gif"<<":/img/images/style1.gif"<<":/img/images/style2.gif"<<":/img/images/style3.gif";
 
-//        this->musicGif->stop();
-//        this->musicGif->setFileName(":/img/images/style.gif");
-//        this->musicGif->start();
+////        this->musicGif->stop();
+////        this->musicGif->setFileName(":/img/images/style.gif");
+////        this->musicGif->start();
 
-        ui->widgetPlayMain->show();
-    }
-    else{
-        //show movie
-        ui->widgetPlayMain->hide();
-    }
+//        ui->widgetPlayMain->show();
+//    }
+//    else{
+//        //show movie
+//        ui->widgetPlayMain->hide();
+//    }
 }
 
